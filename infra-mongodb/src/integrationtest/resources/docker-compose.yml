@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  mongodb-it:
+    image: "mongo:3.7-jessie"
+    ports :
+      - "27027:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=math-api_adm
+      - MONGO_INITDB_ROOT_PASSWORD=math-api_adm
+    command: --auth

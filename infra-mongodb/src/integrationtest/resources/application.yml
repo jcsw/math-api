@@ -1,0 +1,9 @@
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### MongoDB ###
+  data:
+      mongodb:
+        uri: mongodb://math-api_adm:math-api_adm@localhost:27027/admin?connectTimeoutMS=300&socketTimeoutMS=500&serverSelectionTimeoutMS=300&authMechanism=SCRAM-SHA-1

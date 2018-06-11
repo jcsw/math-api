@@ -1,0 +1,19 @@
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### RabbitMQ ###
+  rabbitmq:
+    host: localhost
+    port: 5674
+    virtual-host: /math-api
+    username: math-api_adm
+    password: math-api_adm
+    connection-timeout: 500
+    cache:
+      channel:
+        checkout-timeout: 100
+        size: 5
+      connection:
+        mode: channel

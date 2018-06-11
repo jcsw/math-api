@@ -1,0 +1,70 @@
+### Server ###
+server:
+  port: ${port:9900}
+
+### Logging ###
+logging:
+  level:
+    ROOT: INFO
+  pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} %magenta(%thread) %-5level %logger{5} %msg%n%ex{3}"
+
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### RabbitMQ ###
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /math-api
+    username: math-api_adm
+    password: math-api_adm
+    connection-timeout: 500
+    cache:
+      channel:
+        checkout-timeout: 100
+        size: 5
+      connection:
+        mode: channel
+
+### MongoDB ###
+  data:
+      mongodb:
+        uri: mongodb://math-api_adm:math-api_adm@localhost:27017/admin?connectTimeoutMS=300&socketTimeoutMS=500&serverSelectionTimeoutMS=300&authMechanism=SCRAM-SHA-1
+
+### Hystrix ###
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 2000
+
+### Feign ###
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+### Feature Gateway ###
+      feature-toggle:
+        connectTimeout: 1000
+        readTimeout: 2000
+        loggerLevel: full
+
+### Ribbon ###
+ribbon:
+  eureka:
+    enabled: false
+
+feature-toggle:
+  ribbon:
+    listOfServers: http://localhost:9801
+    ConnectTimeout: 1000
+    readTimeout: 2000
+    maxTotalHttpConnections: 5
+    maxConnectionsPerHost: 5

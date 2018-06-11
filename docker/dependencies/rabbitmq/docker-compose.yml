@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  math-api-rabbitmq:
+    image: "rabbitmq:3.7-management-alpine"
+    environment:
+      RABBITMQ_DEFAULT_USER: "math-api_adm"
+      RABBITMQ_DEFAULT_PASS: "math-api_adm"
+      RABBITMQ_DEFAULT_VHOST: "/math-api"
+    ports:
+      - "15672:15672"
+      - "5672:5672"

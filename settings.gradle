@@ -1,0 +1,12 @@
+rootProject.name = 'math-api'
+
+include 'application-ws'
+
+include 'domain-api'
+include 'domain-impl'
+
+include 'infra-feature-toggle'
+include 'infra-mongodb'
+include 'infra-rabbitmq'
+
+include 'spring-aop-log'

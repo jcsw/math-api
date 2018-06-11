@@ -1,0 +1,39 @@
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### Hystrix ###
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 2000
+
+### Feign ###
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+### Feature Gateway ###
+      feature-toggle:
+        connectTimeout: 1000
+        readTimeout: 2000
+        loggerLevel: full
+
+### Ribbon ###
+ribbon:
+  eureka:
+    enabled: false
+
+feature-toggle:
+  ribbon:
+    listOfServers: http://localhost:9801
+    ConnectTimeout: 1000
+    readTimeout: 2000
+    maxTotalHttpConnections: 1
+    maxConnectionsPerHost: 1

@@ -1,0 +1,79 @@
+[
+  {
+    "line": 1,
+    "elements": [
+      {
+        "line": 3,
+        "name": "Sum operation",
+        "description": "",
+        "id": "math-calculator;sum-operation",
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 3965792,
+              "status": "passed"
+            },
+            "line": 4,
+            "name": "Receive an math operation of SUM with parameters 3.5 and 5.5",
+            "match": {
+              "arguments": [
+                {
+                  "val": "SUM",
+                  "offset": 29
+                },
+                {
+                  "val": "3.5",
+                  "offset": 49
+                },
+                {
+                  "val": "5.5",
+                  "offset": 57
+                }
+              ],
+              "location": "MathOperationSteps.receive_operation_and_parameters(String,String,String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 9760117,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "Do math operation execute",
+            "match": {
+              "location": "MathOperationSteps.do_math_operation_execute()"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 5036264,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "I should respond 9.0",
+            "match": {
+              "arguments": [
+                {
+                  "val": "9.0",
+                  "offset": 17
+                }
+              ],
+              "location": "MathOperationSteps.i_should_respond(String)"
+            },
+            "keyword": "Then "
+          }
+        ]
+      }
+    ],
+    "name": "Math calculator",
+    "description": "",
+    "id": "math-calculator",
+    "keyword": "Feature",
+    "uri": "src/test/resources/features/math_operation.feature",
+    "tags": []
+  }
+]
