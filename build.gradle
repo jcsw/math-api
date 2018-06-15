@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.2.RELEASE'
+        springBootVersion = '2.0.3.RELEASE'
         avastDockerComposeVersion = '0.7.1'
         transmodeDockerVersion = '1.2'
     }
@@ -43,8 +43,8 @@ subprojects {
     }
 
     ext {
-        springBootVersion = '2.0.2.RELEASE'
-        springCloudVersion = 'Finchley.BUILD-SNAPSHOT'
+        springBootVersion = '2.0.3.RELEASE'
+        springCloudVersion = 'Finchley.RC2'
     }
 
     dependencyManagement {
@@ -55,16 +55,18 @@ subprojects {
     }
 
     dependencies {
-        compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
-        compile('org.springframework.cloud:spring-cloud-starter-netflix-ribbon')
-        compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+        compile 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+        compile 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
+        compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
-        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile 'org.springframework.boot:spring-boot-starter-test'
         testCompile 'io.cucumber:cucumber-java8:3.0.2'
         testCompile 'io.cucumber:cucumber-junit:3.0.2'
-        testCompile 'io.cucumber:cucumber-spring:3.0.2'
-        testCompile 'io.rest-assured:rest-assured:3.0.1'
-        testCompile 'io.rest-assured:json-schema-validator:3.0.1'
+    }
+
+    configurations {
+        compile.exclude module: 'spring-boot-starter-tomcat'
+        compile.exclude group: 'org.apache.tomcat'
     }
 
     jacoco {
@@ -120,35 +122,52 @@ project('application-ws') {
     }
 
     dependencies {
-        compile('org.springframework.boot:spring-boot-starter-actuator')
-        compile('org.springframework.boot:spring-boot-starter-web')
-        compile('io.springfox:springfox-swagger2:2.8.0')
-        compile('io.springfox:springfox-swagger-ui:2.8.0')
-
-        compile project(':domain-api')
         compile project(':spring-aop-log')
+        compile project(':domain-api')
+        compile project(':infra-api')
+
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-undertow'
+        compile 'org.springframework.boot:spring-boot-starter-actuator'
+        compile 'io.springfox:springfox-swagger2:2.8.0'
+        compile 'io.springfox:springfox-swagger-ui:2.8.0'
+
         runtime project(':domain-impl')
+        runtime project(':infra-impl')
 
-        runtime('org.springframework.boot:spring-boot-devtools')
+        runtime 'org.springframework.boot:spring-boot-devtools'
 
-        testCompile('org.springframework.boot:spring-boot-starter-amqp')
-        testCompile('org.springframework.boot:spring-boot-starter-data-mongodb')
-
-        testCompile project(':infra-mongodb')
+        testCompile 'io.cucumber:cucumber-spring:3.0.2'
+        testCompile 'io.rest-assured:rest-assured:3.0.1'
+        testCompile 'io.rest-assured:json-schema-validator:3.0.1'
     }
 }
 
 project('domain-api') {
     dependencies {
-        compile('org.apache.commons:commons-lang3')
-        compile('io.springfox:springfox-swagger2:2.8.0')
+        compile 'org.apache.commons:commons-lang3'
+        compile 'io.springfox:springfox-swagger2:2.8.0'
     }
 }
 
 project('domain-impl') {
     dependencies {
-        compile project(':domain-api')
         compile project(':spring-aop-log')
+        compile project(':domain-api')
+        compile project(':infra-api')
+    }
+}
+
+project('infra-api') {
+    dependencies {
+        compile project(':domain-api')
+    }
+}
+
+project('infra-impl') {
+    dependencies {
+        compile project(':spring-aop-log')
+        compile project(':infra-api')
         compile project(':infra-mongodb')
         compile project(':infra-rabbitmq')
         compile project(':infra-feature-toggle')
@@ -160,7 +179,7 @@ project('infra-feature-toggle') {
     dependencies {
         compile project(':spring-aop-log')
 
-        testCompile('com.github.tomakehurst:wiremock:2.18.0')
+        testCompile 'com.github.tomakehurst:wiremock:2.18.0'
     }
 }
 
@@ -178,7 +197,8 @@ project('infra-mongodb') {
 
     dependencies {
         compile project(':spring-aop-log')
-        compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+
+        compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
     }
 }
 
@@ -196,6 +216,7 @@ project('infra-rabbitmq') {
 
     dependencies {
         compile project(':spring-aop-log')
-        compile('org.springframework.boot:spring-boot-starter-amqp')
+
+        compile 'org.springframework.boot:spring-boot-starter-amqp'
     }
 }
