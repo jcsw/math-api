@@ -1,9 +1,13 @@
 package br.com.jcsw.math.infra.rabbitmq;
 
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
+
 /**
  * Listener for receive message of a consumer
  */
 public interface ConsumerListener {
+
+  String ASYNC_OPERATION = CONSUMER_PREFIX + "async_operation";
 
   /**
    * Receive message

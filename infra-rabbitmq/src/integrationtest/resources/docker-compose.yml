@@ -9,3 +9,4 @@ services:
       RABBITMQ_DEFAULT_VHOST: "/math-api"
     ports:
       - "5674:5672"
+      - "15674:15672"

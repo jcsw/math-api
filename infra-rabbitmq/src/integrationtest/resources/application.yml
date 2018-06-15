@@ -1,9 +1,5 @@
-### Spring ###
-spring:
-  application:
-    name: math-api
-
 ### RabbitMQ ###
+spring:
   rabbitmq:
     host: localhost
     port: 5674

@@ -1,5 +1,7 @@
 package br.com.jcsw.math.infra.rabbitmq;
 
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.PRODUCER_PREFIX;
+
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.commons.lang.StringUtils;
@@ -15,19 +17,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProducerMessage {
 
+  public static final String ASYNC_OPERATION = PRODUCER_PREFIX + "async.operation";
+
   @Autowired
   private RabbitTemplate rabbitTemplate;
 
-
   @HystrixCommand(fallbackMethod = "sendMessageFallback")
   @LogExecutionInfo
-  public void sendMessage(Producer exchange, Object message) {
-    rabbitTemplate.convertAndSend(exchange.identifier(), StringUtils.EMPTY, message);
+  public void sendMessage(String producer, Object message) {
+    rabbitTemplate.convertAndSend(producer, StringUtils.EMPTY, message);
   }
 
   @LogExecutionInfo
   @SuppressWarnings("unused")
-  private void sendMessageFallback(Producer exchange, Object message) {
+  private void sendMessageFallback(String producer, Object message) {
     // TODO implement
   }
 }

@@ -60,7 +60,7 @@ public class ConsumerMessageRecoverer implements MessageRecoverer {
     }
 
     String queue = message.getMessageProperties().getConsumerQueue();
-    Consumer consumer = Consumer.convertByIdentifier(queue);
+    Consumer consumer = RabbitMQResourcesRegister.getRegisteredConsumers().get(queue);
 
     if(retriesHeader < consumer.getRetryQty()) {
       headers.put(X_RETRIES_HEADER, retriesHeader + 1);

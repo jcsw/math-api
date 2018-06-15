@@ -2,7 +2,6 @@ package br.com.jcsw.math;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.infra.ft.FeatureToggleClient;
-import br.com.jcsw.math.infra.rabbitmq.Producer;
 import br.com.jcsw.math.infra.rabbitmq.ProducerMessage;
 import br.com.jcsw.math.mongodb.MathOperationEntity;
 import br.com.jcsw.math.mongodb.MathOperationRepository;
@@ -26,11 +25,12 @@ public class MathServiceImpl implements MathService {
   @Override
   public OperationResponse executeMathOperation(OperationRequest operationRequest) {
 
-    BigDecimal result = MathOperationExecutor.execute(operationRequest.getOperation(), operationRequest.getParameters());
+    BigDecimal result = MathOperationExecutor
+        .execute(operationRequest.getOperation(), operationRequest.getParameters());
     OperationResponse operationResponse = new OperationResponse(result);
 
     if(featureToggleClient.active("send_to_async_operation")) {
-      producerMessage.sendMessage(Producer.ASYNC_OPERATION, operationResponse);
+      producerMessage.sendMessage(ProducerMessage.ASYNC_OPERATION, operationResponse);
     }
 
     mathOperationRepository.insert(

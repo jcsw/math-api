@@ -30,36 +30,63 @@ public class RabbitMQIT {
   public void consumerMessageOnDirectProducer() {
 
     //Given
-    String message = "directProducer-" + new Date().getTime();
+    Producer producerDirect = new Producer();
+    producerDirect.setName("direct_test");
+    producerDirect.setType(ProducerType.DIRECT);
+
+    Consumer consumer = new Consumer();
+    consumer.setName("direct_test");
+    consumer.setProducer("direct_test");
+    consumer.setRetryQty(2);
+    consumer.setRetryTime(100);
+
+    String message = "direct-producer-" + new Date().getTime();
 
     //When
-    producerMessage.sendMessage(Producer.PRODUCER_DIRECT_TEST, message);
+    producerMessage.sendMessage(producerDirect.identifier(), message);
     waitConsumeMessage();
 
     //Then
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
-    assertEquals(1,
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
+    long expectedAttempts = 1;
+
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
   }
 
   @Test
   public void consumerMessageOnFanoutProducer() {
 
     //Given
-    String message = "fanoutProducer-" + new Date().getTime();
+    Producer producerFanout = new Producer();
+    producerFanout.setName("fanout_test");
+    producerFanout.setType(ProducerType.FANOUT);
+
+    Consumer consumer1 = new Consumer();
+    consumer1.setName("fanout_test_1");
+    consumer1.setProducer("fanout_test");
+    consumer1.setRetryQty(2);
+    consumer1.setRetryTime(100);
+
+    Consumer consumer2 = new Consumer();
+    consumer2.setName("fanout_test_2");
+    consumer2.setProducer("fanout_test");
+    consumer2.setRetryQty(2);
+    consumer2.setRetryTime(100);
+
+    String message = "fanout-producer-" + new Date().getTime();
 
     //When
-    producerMessage.sendMessage(Producer.PRODUCER_FANOUT_TEST, message);
+    producerMessage.sendMessage(producerFanout.identifier(), message);
     waitConsumeMessage();
 
     //Then
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_FANOUT_TEST_1.identifier(), message));
-    assertEquals(1,
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_FANOUT_TEST_1.identifier(), message));
+    long expectedAttempts = 1;
 
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_FANOUT_TEST_2.identifier(), message));
-    assertEquals(1,
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_FANOUT_TEST_2.identifier(), message));
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer1.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer1.identifier(), message));
+
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer2.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer2.identifier(), message));
 
   }
 
@@ -67,52 +94,84 @@ public class RabbitMQIT {
   public void retryMessageConsumer() {
 
     //Given
-    String message = "Retry";
+    Producer producer = new Producer();
+    producer.setName("retry_test");
+    producer.setType(ProducerType.DIRECT);
+
+    Consumer consumer = new Consumer();
+    consumer.setName("retry_test");
+    consumer.setProducer("retry_test");
+    consumer.setRetryQty(3);
+    consumer.setRetryTime(10);
+
+    String message = "retry" + new Date().getTime();
 
     //When
-    producerMessage.sendMessage(Producer.PRODUCER_DIRECT_TEST, message);
+    producerMessage.sendMessage(producer.identifier(), message);
     waitConsumeMessage();
 
     //Then
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
-    assertEquals(Consumer.CONSUMER_DIRECT_TEST.getRetryQty(),
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
+    long expectedAttempts = 3;
 
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
   }
 
   @Test
   public void fallbackMessageConsumer() {
 
     //Given
-    String message = "Fallback";
+    Producer producer = new Producer();
+    producer.setName("fallback_test");
+    producer.setType(ProducerType.DIRECT);
+
+    Consumer consumer = new Consumer();
+    consumer.setName("fallback_test");
+    consumer.setProducer("fallback_test");
+    consumer.setRetryQty(3);
+    consumer.setRetryTime(10);
+
+    String message = "fallback" + new Date().getTime();
 
     //When
-    producerMessage.sendMessage(Producer.PRODUCER_DIRECT_TEST, message);
+    producerMessage.sendMessage(producer.identifier(), message);
     waitConsumeMessage();
 
     //Then
-    assertFalse(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
-    assertEquals(Consumer.CONSUMER_DIRECT_TEST.getRetryQty() + 1,
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
-    assertTrue(consumerMessageVerify.verifyMessageFallback(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
+    long expectedAttempts = 4;
+
+    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
+    assertTrue(consumerMessageVerify.verifyMessageFallback(consumer.identifier(), message));
   }
 
   @Test
   public void sendToDLQ() {
 
     //Given
-    String message = "DLQ";
+    Producer producer = new Producer();
+    producer.setName("dlq_test");
+    producer.setType(ProducerType.DIRECT);
+
+    Consumer consumer = new Consumer();
+    consumer.setName("dlq_test");
+    consumer.setProducer("dlq_test");
+    consumer.setRetryQty(3);
+    consumer.setRetryTime(10);
+
+    String message = "dlq" + new Date().getTime();
 
     //When
-    producerMessage.sendMessage(Producer.PRODUCER_DIRECT_TEST, message);
+    producerMessage.sendMessage(producer.identifier(), message);
     waitConsumeMessage();
 
     //Then
-    assertFalse(consumerMessageVerify.verifyMessageConsumed(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
-    assertEquals(Consumer.CONSUMER_DIRECT_TEST.getRetryQty() + 1,
-        consumerMessageVerify.verifyMessageConsumeAttempts(Consumer.CONSUMER_DIRECT_TEST.identifier(), message));
+    long expectedAttempts = 4;
 
-    Object dlqMessage = rabbitTemplate.receiveAndConvert(Consumer.CONSUMER_DIRECT_TEST.dlqIdentifier());
+    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
+
+    Object dlqMessage = rabbitTemplate.receiveAndConvert(consumer.dlqIdentifier());
     assertEquals(message, dlqMessage);
 
   }
@@ -124,4 +183,5 @@ public class RabbitMQIT {
       e.printStackTrace();
     }
   }
+
 }

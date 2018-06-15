@@ -1,0 +1,18 @@
+{
+  "producers" : [
+    {"name": "direct_test",   "type":"DIRECT"},
+    {"name": "fanout_test",   "type":"FANOUT"},
+    {"name": "retry_test",    "type":"DIRECT"},
+    {"name": "fallback_test", "type":"DIRECT"},
+    {"name": "dlq_test",      "type":"DIRECT"}
+  ],
+
+  "consumers" : [
+    {"name": "direct_test",   "producer":"direct_test",   "retryQty": 2, "retryTime": 200},
+    {"name": "fanout_test_1", "producer":"fanout_test",   "retryQty": 2, "retryTime": 200},
+    {"name": "fanout_test_2", "producer":"fanout_test",   "retryQty": 2, "retryTime": 200},
+    {"name": "retry_test",    "producer":"retry_test",    "retryQty": 3, "retryTime": 10},
+    {"name": "fallback_test", "producer":"fallback_test", "retryQty": 3, "retryTime": 10},
+    {"name": "dlq_test",      "producer":"dlq_test",      "retryQty": 3, "retryTime": 10}
+  ]
+}

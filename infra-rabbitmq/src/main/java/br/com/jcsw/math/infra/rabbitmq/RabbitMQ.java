@@ -6,7 +6,6 @@ import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.X_DEAD_LETTER_EX
 import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.X_DEAD_LETTER_ROUTING_KEY;
 import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.X_MESSAGE_TTL;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,26 +32,28 @@ class RabbitMQ {
 
   private static final Logger logger = LoggerFactory.getLogger(RabbitMQ.class);
 
+
   static void build(RabbitAdmin admin) {
 
     buildRetryExchange(admin);
     buildDlqExchange(admin);
 
-    Arrays.stream(Producer.values()).forEach(producer -> {
-      buildExchange(admin, producer);
-    });
+    RabbitMQResourcesRegister.getRegisteredProducers().values() //
+        .forEach(producer -> buildExchange(admin, producer));
 
-    Arrays.stream(Consumer.values()).forEach(consumer -> {
+    RabbitMQResourcesRegister.getRegisteredConsumers().values() //
+        .forEach(consumer -> {
 
-      Queue queue = buildQueue(admin, consumer);
-      Queue retryQueue = buildRetryQueue(admin, consumer);
-      Queue dlqQueue = buildDlqQueue(admin, consumer);
+          Queue queue = buildQueue(admin, consumer);
+          Queue retryQueue = buildRetryQueue(admin, consumer);
+          Queue dlqQueue = buildDlqQueue(admin, consumer);
 
-      buildQueueBinding(admin, consumer, queue);
-      buildRetryQueueBinding(admin, consumer, retryQueue);
-      buildDlqQueueBinding(admin, consumer, dlqQueue);
-    });
+          buildQueueBinding(admin, consumer, queue);
+          buildRetryQueueBinding(admin, consumer, retryQueue);
+          buildDlqQueueBinding(admin, consumer, dlqQueue);
+        });
   }
+
 
   private static void buildRetryExchange(RabbitAdmin admin) {
     Exchange retryExchange = new DirectExchange(RETRY_EXCHANGE, true, false);
@@ -143,5 +144,4 @@ class RabbitMQ {
             .with(consumer.identifier())//
             .noargs());
   }
-
 }

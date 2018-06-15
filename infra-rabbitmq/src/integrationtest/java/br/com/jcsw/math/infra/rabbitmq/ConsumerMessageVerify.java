@@ -20,7 +20,7 @@ public class ConsumerMessageVerify {
     messagesConsumeAttempt.add(consumer + message);
   }
 
-  public long verifyMessageConsumeAttempts(String consumer, Object message) {
+  public long countMessageConsumeAttempts(String consumer, Object message) {
     return messagesConsumeAttempt.stream().filter(s -> s.equals(consumer + message)).count();
   }
 

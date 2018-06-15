@@ -62,10 +62,38 @@ subprojects {
         testCompile('org.springframework.boot:spring-boot-starter-test')
         testCompile 'io.cucumber:cucumber-java8:3.0.2'
         testCompile 'io.cucumber:cucumber-junit:3.0.2'
+        testCompile 'io.cucumber:cucumber-spring:3.0.2'
+        testCompile 'io.rest-assured:rest-assured:3.0.1'
+        testCompile 'io.rest-assured:json-schema-validator:3.0.1'
     }
 
     jacoco {
         toolVersion = "0.7.9"
+    }
+
+    configurations {
+        integrationtestCompile.extendsFrom testCompile
+        integrationtestRuntime.extendsFrom testRuntime
+    }
+
+    sourceSets {
+        integrationtest {
+            java {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/integrationtest/java')
+            }
+            resources.srcDir file('src/integrationtest/resources')
+        }
+    }
+
+    task integrationtest(type: Test) {
+        testClassesDirs = sourceSets.integrationtest.output.classesDirs
+        classpath = sourceSets.integrationtest.runtimeClasspath
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
     }
 }
 
@@ -129,31 +157,6 @@ project('domain-impl') {
 
 project('infra-feature-toggle') {
 
-    configurations {
-        integrationtestCompile.extendsFrom testCompile
-        integrationtestRuntime.extendsFrom testRuntime
-    }
-
-    sourceSets {
-        integrationtest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/integrationtest/java')
-            }
-            resources.srcDir file('src/integrationtest/resources')
-        }
-    }
-
-    task integrationtest(type: Test) {
-        testClassesDirs = sourceSets.integrationtest.output.classesDirs
-        classpath = sourceSets.integrationtest.runtimeClasspath
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
-    }
-
     dependencies {
         compile project(':spring-aop-log')
 
@@ -169,31 +172,6 @@ project('infra-mongodb') {
         useComposeFiles = ["$project.projectDir/src/integrationtest/resources/docker-compose.yml"]
         stopContainers = true
         removeContainers = true
-    }
-
-    configurations {
-        integrationtestCompile.extendsFrom testCompile
-        integrationtestRuntime.extendsFrom testRuntime
-    }
-
-    sourceSets {
-        integrationtest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/integrationtest/java')
-            }
-            resources.srcDir file('src/integrationtest/resources')
-        }
-    }
-
-    task integrationtest(type: Test) {
-        testClassesDirs = sourceSets.integrationtest.output.classesDirs
-        classpath = sourceSets.integrationtest.runtimeClasspath
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
     }
 
     dockerCompose.isRequiredBy(integrationtest)
@@ -212,31 +190,6 @@ project('infra-rabbitmq') {
         useComposeFiles = ["$project.projectDir/src/integrationtest/resources/docker-compose.yml"]
         stopContainers = true
         removeContainers = true
-    }
-
-    configurations {
-        integrationtestCompile.extendsFrom testCompile
-        integrationtestRuntime.extendsFrom testRuntime
-    }
-
-    sourceSets {
-        integrationtest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/integrationtest/java')
-            }
-            resources.srcDir file('src/integrationtest/resources')
-        }
-    }
-
-    task integrationtest(type: Test) {
-        testClassesDirs = sourceSets.integrationtest.output.classesDirs
-        classpath = sourceSets.integrationtest.runtimeClasspath
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
     }
 
     dockerCompose.isRequiredBy(integrationtest)
