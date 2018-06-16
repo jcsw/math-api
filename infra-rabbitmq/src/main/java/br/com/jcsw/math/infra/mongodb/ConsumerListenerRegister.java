@@ -19,14 +19,13 @@ public class ConsumerListenerRegister implements InitializingBean {
 
   private static final Logger logger = LoggerFactory.getLogger(ConsumerListenerRegister.class);
 
-  private static Map<String, ConsumerListener> registeredConsumerListeners;
+  private Map<String, ConsumerListener> registeredConsumerListeners;
 
   @Autowired
   private List<ConsumerListener> consumerListeners;
 
   @Override
   public void afterPropertiesSet() {
-
     if(registeredConsumerListeners == null) {
       registeredConsumerListeners = consumerListeners.stream()
           .collect(Collectors.toMap(ConsumerListener::consumerIdentifier, l -> l));

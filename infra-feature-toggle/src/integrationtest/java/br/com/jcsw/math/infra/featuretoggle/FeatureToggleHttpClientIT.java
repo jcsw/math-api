@@ -23,7 +23,7 @@ public class FeatureToggleHttpClientIT {
   private FeatureToggleHttpClient featureToggleHttpClient;
 
   @ClassRule
-  public static WireMockClassRule wiremock = new WireMockClassRule(wireMockConfig().port(9801));
+  public static final WireMockClassRule wiremock = new WireMockClassRule(wireMockConfig().port(9801));
 
   @Test
   public void thenReturnTrueWhenFeatureActive() {

@@ -16,8 +16,6 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-
 repositories {
     jcenter()
     maven { url "https://repo.spring.io/snapshot" }
@@ -27,14 +25,13 @@ repositories {
 group = 'br.com.jcsw'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = 10
-targetCompatibility = 10
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
-    apply plugin: 'jacoco'
     apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 10
+    targetCompatibility = 10
 
     repositories {
         jcenter()
@@ -67,10 +64,6 @@ subprojects {
     configurations {
         compile.exclude module: 'spring-boot-starter-tomcat'
         compile.exclude group: 'org.apache.tomcat'
-    }
-
-    jacoco {
-        toolVersion = "0.7.9"
     }
 
     configurations {
