@@ -17,7 +17,7 @@ public class FeatureToggleImpl implements FeatureToggle {
   @LogExecutionInfo
   @Override
   public Boolean isActiveSendToAsyncOperation() {
-    return featureToggleHttpClient.isActive("send_to_async_operation");
+    return featureToggleHttpClient.isActiveFeature("send_to_async_operation");
   }
 
   @LogExecutionInfo

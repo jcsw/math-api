@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface FeatureToggleHttpClient {
 
   @RequestMapping(path = "/feature/status/{feature_name}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-  Boolean isActive(@PathVariable("feature_name") String featureName);
+  Boolean isActiveFeature(@PathVariable("feature_name") String featureName);
 
 }

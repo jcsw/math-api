@@ -36,7 +36,7 @@ public class FeatureToggleHttpClientIT {
             .withStatus(200)
             .withBody("true")));
 
-    Boolean active = featureToggleHttpClient.isActive(myActivateFeature);
+    Boolean active = featureToggleHttpClient.isActiveFeature(myActivateFeature);
 
     Assert.assertTrue(active);
   }
@@ -53,24 +53,8 @@ public class FeatureToggleHttpClientIT {
             .withStatus(200)
             .withBody("false")));
 
-    Boolean active = featureToggleHttpClient.isActive(myActivateFeature);
+    Boolean active = featureToggleHttpClient.isActiveFeature(myActivateFeature);
 
     Assert.assertFalse(active);
   }
-
-  @Test
-  public void thenReturnFalseWhenServerError() {
-
-    String myActivate = "myFeature";
-
-    wiremock.stubFor(get(urlEqualTo("/feature/status/" + myActivate))
-        .willReturn(aResponse() //
-            .withHeader("Content-Type", "application/json") //
-            .withStatus(500)));
-
-    Boolean active = featureToggleHttpClient.isActive(myActivate);
-
-    Assert.assertFalse(active);
-  }
-
 }
