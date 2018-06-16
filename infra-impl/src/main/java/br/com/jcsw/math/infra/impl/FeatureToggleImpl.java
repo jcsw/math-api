@@ -22,7 +22,7 @@ public class FeatureToggleImpl implements FeatureToggle {
 
   @LogExecutionInfo
   @SuppressWarnings("unused")
-  public Boolean isActiveSendToAsyncOperationFallback(String featureName) {
+  public Boolean isActiveSendToAsyncOperationFallback() {
     return Boolean.FALSE;
   }
 

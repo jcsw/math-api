@@ -30,7 +30,6 @@ public class FeatureToggleHttpClientIT {
 
     String myActivateFeature = "myActivateFeature";
 
-    // Stubbing WireMock
     wiremock.stubFor(get(urlEqualTo("/feature/status/" + myActivateFeature))
         .willReturn(aResponse() //
             .withHeader("Content-Type", "application/json") //
@@ -48,7 +47,6 @@ public class FeatureToggleHttpClientIT {
 
     String myActivateFeature = "myInactivateFeature";
 
-    // Stubbing WireMock
     wiremock.stubFor(get(urlEqualTo("/feature/status/" + myActivateFeature))
         .willReturn(aResponse() //
             .withHeader("Content-Type", "application/json") //
@@ -65,7 +63,6 @@ public class FeatureToggleHttpClientIT {
 
     String myActivate = "myFeature";
 
-    // Stubbing WireMock
     wiremock.stubFor(get(urlEqualTo("/feature/status/" + myActivate))
         .willReturn(aResponse() //
             .withHeader("Content-Type", "application/json") //
