@@ -72,27 +72,48 @@ subprojects {
     configurations {
         compile.exclude module: 'spring-boot-starter-tomcat'
         compile.exclude group: 'org.apache.tomcat'
-    }
 
-    configurations {
-        integrationtestCompile.extendsFrom testCompile
-        integrationtestRuntime.extendsFrom testRuntime
+        integrationTestCompile.extendsFrom testCompile
+        integrationTestRuntime.extendsFrom testRuntime
+
+        contractTestCompile.extendsFrom testCompile
+        contractTestRuntime.extendsFrom testRuntime
     }
 
     sourceSets {
-        integrationtest {
+        contractTest {
             java {
                 compileClasspath += main.output + test.output
                 runtimeClasspath += main.output + test.output
-                srcDir file('src/integrationtest/java')
+                srcDir file('src/contractTest/java')
             }
-            resources.srcDir file('src/integrationtest/resources')
+            resources.srcDir file('src/contractTest/resources')
         }
     }
 
-    task integrationtest(type: Test) {
-        testClassesDirs = sourceSets.integrationtest.output.classesDirs
-        classpath = sourceSets.integrationtest.runtimeClasspath
+    sourceSets {
+        integrationTest {
+            java {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/integrationTest/java')
+            }
+            resources.srcDir file('src/integrationTest/resources')
+        }
+    }
+
+    task integrationTest(type: Test) {
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    task contractTest(type: Test) {
+        testClassesDirs = sourceSets.contractTest.output.classesDirs
+        classpath = sourceSets.contractTest.runtimeClasspath
 
         testLogging {
             events "passed", "skipped", "failed"
@@ -132,6 +153,12 @@ subprojects {
             taskGraph.hasTask((tasks.spotbugs))
         }
         tasks.spotbugsTest.onlyIf {
+            taskGraph.hasTask((tasks.spotbugs))
+        }
+        tasks.spotbugsIntegrationTest.onlyIf {
+            taskGraph.hasTask((tasks.spotbugs))
+        }
+        tasks.spotbugsContractTest.onlyIf {
             taskGraph.hasTask((tasks.spotbugs))
         }
     }
@@ -203,6 +230,7 @@ project('infra-api') {
 }
 
 project('infra-impl') {
+
     dependencies {
         compile project(':spring-aop-log')
         compile project(':infra-api')
@@ -226,12 +254,12 @@ project('infra-mongodb') {
     apply plugin: 'docker-compose'
 
     dockerCompose {
-        useComposeFiles = ["$project.projectDir/src/integrationtest/resources/docker-compose.yml"]
+        useComposeFiles = ["$project.projectDir/src/contractTest/resources/docker-compose.yml"]
         stopContainers = true
         removeContainers = true
     }
 
-    dockerCompose.isRequiredBy(integrationtest)
+    dockerCompose.isRequiredBy(contractTest)
 
     dependencies {
         compile project(':spring-aop-log')
@@ -245,12 +273,12 @@ project('infra-rabbitmq') {
     apply plugin: 'docker-compose'
 
     dockerCompose {
-        useComposeFiles = ["$project.projectDir/src/integrationtest/resources/docker-compose.yml"]
+        useComposeFiles = ["$project.projectDir/src/contractTest/resources/docker-compose.yml"]
         stopContainers = true
         removeContainers = true
     }
 
-    dockerCompose.isRequiredBy(integrationtest)
+    dockerCompose.isRequiredBy(contractTest)
 
     dependencies {
         compile project(':spring-aop-log')

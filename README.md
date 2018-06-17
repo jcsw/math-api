@@ -6,7 +6,8 @@ Build
 ```
 ./gradlew clean build
 ./gradlew build spotbugs
-./gradlew integrationtest
+./gradlew integrationTest
+./gradlew contractTest
 ./gradlew jacocoTestReport
 ```
 
