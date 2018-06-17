@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RabbitMQIT {
 
   @Autowired
-  private RabbitMQProducerMessage producerMessage;
+  private RabbitMQAsyncMessageProducer producerMessage;
 
   @Autowired
   private ConsumerMessageVerify consumerMessageVerify;

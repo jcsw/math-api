@@ -1,9 +1,9 @@
 {
   "producers" : [
-    {"name": "async_operation",   "type":"DIRECT"}
+    {"name": "async_math_operation",   "type":"DIRECT"}
   ],
 
   "consumers" : [
-    {"name": "async_operation",   "producer":"async_operation",   "retryQty": 2, "retryTime": 3000}
+    {"name": "async_math_operation",   "producer":"async_math_operation",   "retryQty": 2, "retryTime": 3000}
   ]
 }

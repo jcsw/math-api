@@ -2,7 +2,7 @@ package br.com.jcsw.math.infra.impl;
 
 
 import br.com.jcsw.math.infra.featuretoggle.FeatureToggleHttpClient;
-import br.com.jcsw.math.infra.mongodb.RabbitMQProducerMessage;
+import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
 import br.com.jcsw.math.mongodb.MathOperationRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -20,7 +20,7 @@ public class TestConfiguration {
   private MathOperationRepository mathOperationRepository;
 
   @MockBean
-  private RabbitMQProducerMessage rabbitMQProducerMessage;
+  private RabbitMQAsyncMessageProducer rabbitMQAsyncMessageProducer;
 
   @MockBean
   private FeatureToggleHttpClient featureToggleHttpClient;

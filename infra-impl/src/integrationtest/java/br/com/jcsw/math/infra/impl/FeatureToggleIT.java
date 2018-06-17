@@ -26,7 +26,7 @@ public class FeatureToggleIT {
   @Test
   public void shouldReturnTrueWhenClientItsUpAndFeatureItsActive() {
 
-    when(featureToggleHttpClient.isActiveFeature("send_to_async_operation")) //
+    when(featureToggleHttpClient.isActiveFeature("send_to_async_math_operation")) //
         .thenReturn(Boolean.TRUE);
 
     Assert.assertEquals(featureToggle.isActiveSendToAsyncOperation(), Boolean.TRUE);
@@ -35,7 +35,7 @@ public class FeatureToggleIT {
   @Test
   public void shouldReturnFalseWhenClientItsUpAndFeatureItsInactive() {
 
-    when(featureToggleHttpClient.isActiveFeature("send_to_async_operation")) //
+    when(featureToggleHttpClient.isActiveFeature("send_to_async_math_operation")) //
         .thenReturn(Boolean.FALSE);
 
     Assert.assertEquals(featureToggle.isActiveSendToAsyncOperation(), Boolean.FALSE);
@@ -44,7 +44,7 @@ public class FeatureToggleIT {
   @Test
   public void shouldReturnFalseValueWhenClientItsDown() {
 
-    when(featureToggleHttpClient.isActiveFeature("send_to_async_operation")) //
+    when(featureToggleHttpClient.isActiveFeature("send_to_async_math_operation")) //
         .thenThrow(new RuntimeException());
 
     Assert.assertEquals(featureToggle.isActiveSendToAsyncOperation(), Boolean.FALSE);

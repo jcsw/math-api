@@ -3,7 +3,7 @@ package br.com.jcsw.math;
 
 import br.com.jcsw.math.infra.api.FeatureToggle;
 import br.com.jcsw.math.infra.api.PersistenceRepository;
-import br.com.jcsw.math.infra.api.ProducerMessage;
+import br.com.jcsw.math.infra.api.AsyncMessageProducer;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class TestConfiguration {
 
   @MockBean
-  private ProducerMessage producerMessage;
+  private AsyncMessageProducer asyncMessageProducer;
 
   @MockBean
   private FeatureToggle featureToggle;

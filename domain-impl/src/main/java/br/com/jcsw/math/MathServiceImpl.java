@@ -3,7 +3,7 @@ package br.com.jcsw.math;
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.infra.api.FeatureToggle;
 import br.com.jcsw.math.infra.api.PersistenceRepository;
-import br.com.jcsw.math.infra.api.ProducerMessage;
+import br.com.jcsw.math.infra.api.AsyncMessageProducer;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class MathServiceImpl implements MathService {
 
   @Autowired
-  private ProducerMessage producerMessage;
+  private AsyncMessageProducer asyncMessageProducer;
 
   @Autowired
   private FeatureToggle featureToggle;
@@ -29,7 +29,7 @@ public class MathServiceImpl implements MathService {
     OperationResponse operationResponse = new OperationResponse(result);
 
     if(featureToggle.isActiveSendToAsyncOperation()) {
-      producerMessage.sendMessageToSendAsyncOperation(operationRequest);
+      asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
     }
 
     persistenceRepository.persistMathOperationLog(operationRequest, result);

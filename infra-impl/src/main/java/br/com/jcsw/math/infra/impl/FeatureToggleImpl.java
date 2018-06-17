@@ -17,12 +17,12 @@ public class FeatureToggleImpl implements FeatureToggle {
   @LogExecutionInfo
   @Override
   public Boolean isActiveSendToAsyncOperation() {
-    return featureToggleHttpClient.isActiveFeature("send_to_async_operation");
+    return featureToggleHttpClient.isActiveFeature("send_to_async_math_operation");
   }
 
   @LogExecutionInfo
   @SuppressWarnings("unused")
-  public Boolean isActiveSendToAsyncOperationFallback() {
+  private Boolean isActiveSendToAsyncOperationFallback() {
     return Boolean.FALSE;
   }
 

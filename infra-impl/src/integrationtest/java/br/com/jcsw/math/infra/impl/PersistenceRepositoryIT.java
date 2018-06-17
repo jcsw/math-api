@@ -59,6 +59,7 @@ public class PersistenceRepositoryIT {
 
     try {
       persistenceRepository.persistMathOperationLog(operationRequest, result);
+      Assert.fail();
     } catch (Exception ex) {
       Assert.assertEquals("Fallback not implemented", ex.getMessage());
     }

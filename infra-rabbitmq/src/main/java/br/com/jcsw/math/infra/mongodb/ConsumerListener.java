@@ -7,7 +7,7 @@ import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.CONSUMER_PREFIX;
  */
 public interface ConsumerListener {
 
-  String ASYNC_OPERATION = CONSUMER_PREFIX + "async_operation";
+  String ASYNC_MATH_OPERATION = CONSUMER_PREFIX + "async_math_operation";
 
   /**
    * Receive message

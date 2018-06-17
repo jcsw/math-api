@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
  * Produces message to a producer
  */
 @Component
-public class RabbitMQProducerMessage {
+public class RabbitMQAsyncMessageProducer {
 
-  public static final String ASYNC_OPERATION = PRODUCER_PREFIX + "async.operation";
+  public static final String ASYNC_MATH_OPERATION = PRODUCER_PREFIX + "async_math_operation";
 
   @Autowired
   private RabbitTemplate rabbitTemplate;
@@ -31,6 +31,6 @@ public class RabbitMQProducerMessage {
   @LogExecutionInfo
   @SuppressWarnings("unused")
   public void sendMessageFallback(String producer, Object message) {
-    // TODO implement
+    throw new IllegalStateException("Fallback not implemented");
   }
 }

@@ -5,16 +5,16 @@ import br.com.jcsw.math.infra.mongodb.ConsumerListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AsyncOperationConsumer implements ConsumerListener {
+public class MathOperationAsyncConsumer implements ConsumerListener {
 
   @LogExecutionInfo
   @Override
   public void onMessage(Object message) {
-    throw new RuntimeException("not implemented");
+    throw new RuntimeException("Not implemented");
   }
 
   @Override
   public String consumerIdentifier() {
-    return ASYNC_OPERATION;
+    return ASYNC_MATH_OPERATION;
   }
 }
