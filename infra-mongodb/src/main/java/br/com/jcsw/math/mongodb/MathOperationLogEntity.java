@@ -2,6 +2,7 @@ package br.com.jcsw.math.mongodb;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,10 +18,31 @@ public class MathOperationLogEntity {
 
   private BigDecimal result;
 
+  public MathOperationLogEntity() {
+    super();
+  }
+
   public MathOperationLogEntity(String operation, List<BigDecimal> parameters, BigDecimal result) {
     this.operation = operation;
     this.parameters = parameters;
     this.result = result;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if(this == o) {
+      return true;
+    }
+    if(o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    MathOperationLogEntity that = (MathOperationLogEntity) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 
   public String getId() {

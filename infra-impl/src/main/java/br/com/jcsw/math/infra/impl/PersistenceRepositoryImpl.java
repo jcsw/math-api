@@ -30,6 +30,6 @@ public class PersistenceRepositoryImpl implements PersistenceRepository {
   @LogExecutionInfo
   @SuppressWarnings("unused")
   private void persistMathOperationLogFallback(OperationRequest operationRequest, BigDecimal result) {
-    throw new IllegalStateException("Not implemented");
+    throw new IllegalStateException("Fallback not implemented");
   }
 }
