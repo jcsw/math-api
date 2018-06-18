@@ -3,6 +3,7 @@ package br.com.jcsw.math.infra.api;
 
 import br.com.jcsw.math.infra.featuretoggle.FeatureToggleHttpClient;
 import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
+import br.com.jcsw.math.mongodb.AsyncMessageFallbackRepository;
 import br.com.jcsw.math.mongodb.MathOperationRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -24,5 +25,8 @@ public class TestConfiguration {
 
   @MockBean
   private FeatureToggleHttpClient featureToggleHttpClient;
+
+  @MockBean
+  private AsyncMessageFallbackRepository asyncMessageFallbackRepository;
 
 }

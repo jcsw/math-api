@@ -1,12 +1,17 @@
 package br.com.jcsw.math.infra.api;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer.ASYNC_MATH_OPERATION;
+import static br.com.jcsw.math.infra.mongodb.ConsumerListener.ASYNC_MATH_OPERATION;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import br.com.jcsw.math.domain.MathOperation;
 import br.com.jcsw.math.domain.OperationRequest;
 import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
+import br.com.jcsw.math.mongodb.AsyncMessageFallbackEntity;
+import br.com.jcsw.math.mongodb.AsyncMessageFallbackRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Assert;
@@ -26,6 +31,9 @@ public class AsyncMessageProducerIT {
 
   @Autowired
   private AsyncMessageProducer asyncMessageProducer;
+
+  @Autowired
+  private AsyncMessageFallbackRepository asyncMessageFallbackRepository;
 
   @Test
   public void shouldContinueWhenRabbitMQAsyncMessageProducerNotReturnError() {
@@ -52,12 +60,10 @@ public class AsyncMessageProducerIT {
     doThrow(new RuntimeException("Connection error")) //
         .when(rabbitMQAsyncMessageProducer).sendMessage(ASYNC_MATH_OPERATION, operationRequest);
 
-    try {
-      asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
-      Assert.fail();
-    } catch (Exception ex) {
-      Assert.assertEquals("Fallback not implemented", ex.getMessage());
-    }
+    asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
+
+    verify(asyncMessageFallbackRepository, times(1)) //
+        .insert(any(AsyncMessageFallbackEntity.class));
   }
 
 }

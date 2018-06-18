@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message-fallback")
-public class MessageFallbackEntity {
+public class AsyncMessageFallbackEntity {
 
   @Id
   private String id;
@@ -15,12 +15,12 @@ public class MessageFallbackEntity {
 
   private Object message;
 
-  public MessageFallbackEntity(String exchange, Object message) {
+  public AsyncMessageFallbackEntity(String exchange, Object message) {
     this.exchange = exchange;
     this.message = message;
   }
 
-  public MessageFallbackEntity() {
+  public AsyncMessageFallbackEntity() {
     super();
   }
 
