@@ -1,6 +1,7 @@
 package br.com.jcsw.math.infra.api;
 
 import static br.com.jcsw.math.infra.mongodb.ConsumerListener.ASYNC_MATH_OPERATION;
+import static br.com.jcsw.math.infra.mongodb.ConsumerListener.PERSISTENCE_FALLBACK;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.domain.OperationRequest;
@@ -31,6 +32,11 @@ public class AsyncMessageProducerImpl implements AsyncMessageProducer {
   @SuppressWarnings("unused")
   private void sendMessageToAsyncMathOperationFallback(OperationRequest operationRequest) {
     asyncMessageFallbackRepository.insert(new AsyncMessageFallbackEntity(ASYNC_MATH_OPERATION, operationRequest));
+  }
+
+  @Override
+  public void sendMessageToPersistenceFallback(Object entity) {
+    rabbitMQAsyncMessageProducer.sendMessage(PERSISTENCE_FALLBACK, entity);
   }
 
 }

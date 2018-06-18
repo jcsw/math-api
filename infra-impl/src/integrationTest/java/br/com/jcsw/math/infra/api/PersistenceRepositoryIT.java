@@ -1,5 +1,8 @@
 package br.com.jcsw.math.infra.api;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.jcsw.math.domain.MathOperation;
@@ -14,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -25,6 +29,9 @@ public class PersistenceRepositoryIT {
 
   @Autowired
   private PersistenceRepository persistenceRepository;
+
+  @MockBean
+  private AsyncMessageProducer asyncMessageProducer;
 
   @Test
   public void shouldContinueWhenMathOperationRepositoryNotReturnError() {
@@ -46,7 +53,7 @@ public class PersistenceRepositoryIT {
   }
 
   @Test
-  public void shouldReturnErrorWhenMathOperationRepositoryReturnError() {
+  public void shouldExecuteFallbackWhenMathOperationRepositoryReturnError() {
 
     OperationRequest operationRequest = new OperationRequest();
     operationRequest.setOperation(MathOperation.SUM);
@@ -56,13 +63,10 @@ public class PersistenceRepositoryIT {
     when(mathOperationRepository.insert(new MathOperationLogEntity()))
         .thenThrow(new RuntimeException("Connection error"));
 
-    try {
-      persistenceRepository.persistMathOperationLog(operationRequest, result);
-      Assert.fail();
-    } catch (Exception ex) {
-      Assert.assertEquals("Fallback not implemented", ex.getMessage());
-    }
+    persistenceRepository.persistMathOperationLog(operationRequest, result);
 
+    verify(asyncMessageProducer, times(1)) //
+        .sendMessageToPersistenceFallback(any(MathOperationLogEntity.class));
   }
 
 }

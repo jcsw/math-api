@@ -52,7 +52,7 @@ public class AsyncMessageProducerIT {
   }
 
   @Test
-  public void shouldReturnErrorWhenRabbitMQAsyncMessageProducerReturnError() {
+  public void shouldExecuteFallbackWhenRabbitMQAsyncMessageProducerReturnError() {
 
     OperationRequest operationRequest = //
         new OperationRequest(MathOperation.SUM, Arrays.asList(BigDecimal.ONE, BigDecimal.ONE));

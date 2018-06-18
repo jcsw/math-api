@@ -9,6 +9,8 @@ public interface ConsumerListener {
 
   String ASYNC_MATH_OPERATION = CONSUMER_PREFIX + "async_math_operation";
 
+  String PERSISTENCE_FALLBACK = CONSUMER_PREFIX + "persistence_fallback";
+
   /**
    * Receive message
    *

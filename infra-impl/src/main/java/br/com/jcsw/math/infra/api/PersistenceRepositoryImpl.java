@@ -1,7 +1,7 @@
 package br.com.jcsw.math.infra.api;
 
-import br.com.jcsw.math.domain.OperationRequest;
 import br.com.jcsw.math.aop.LogExecutionInfo;
+import br.com.jcsw.math.domain.OperationRequest;
 import br.com.jcsw.math.mongodb.MathOperationLogEntity;
 import br.com.jcsw.math.mongodb.MathOperationRepository;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -14,6 +14,9 @@ public class PersistenceRepositoryImpl implements PersistenceRepository {
 
   @Autowired
   private MathOperationRepository mathOperationRepository;
+
+  @Autowired
+  private AsyncMessageProducer asyncMessageProducer;
 
   @HystrixCommand(fallbackMethod = "persistMathOperationLogFallback")
   @LogExecutionInfo
@@ -29,6 +32,10 @@ public class PersistenceRepositoryImpl implements PersistenceRepository {
   @LogExecutionInfo
   @SuppressWarnings("unused")
   private void persistMathOperationLogFallback(OperationRequest operationRequest, BigDecimal result) {
-    throw new IllegalStateException("Fallback not implemented");
+    asyncMessageProducer.sendMessageToPersistenceFallback( //
+        new MathOperationLogEntity( //
+            operationRequest.getOperation().name(), //
+            operationRequest.getParameters(), //
+            result));
   }
 }
