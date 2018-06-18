@@ -1,6 +1,6 @@
 package br.com.jcsw.math.infra.api;
 
-import static br.com.jcsw.math.infra.mongodb.ConsumerListener.ASYNC_MATH_OPERATION;
+import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.ASYNC_MATH_OPERATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -9,9 +9,9 @@ import static org.mockito.Mockito.verify;
 
 import br.com.jcsw.math.domain.MathOperation;
 import br.com.jcsw.math.domain.OperationRequest;
-import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
-import br.com.jcsw.math.mongodb.AsyncMessageFallbackEntity;
-import br.com.jcsw.math.mongodb.AsyncMessageFallbackRepository;
+import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
+import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackEntity;
+import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Assert;

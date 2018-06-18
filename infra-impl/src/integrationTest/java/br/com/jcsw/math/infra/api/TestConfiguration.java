@@ -2,9 +2,9 @@ package br.com.jcsw.math.infra.api;
 
 
 import br.com.jcsw.math.infra.featuretoggle.FeatureToggleHttpClient;
-import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
-import br.com.jcsw.math.mongodb.AsyncMessageFallbackRepository;
-import br.com.jcsw.math.mongodb.MathOperationRepository;
+import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
+import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
+import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.context.annotation.ComponentScan;

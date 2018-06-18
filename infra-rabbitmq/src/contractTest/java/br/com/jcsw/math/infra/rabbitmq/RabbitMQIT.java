@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

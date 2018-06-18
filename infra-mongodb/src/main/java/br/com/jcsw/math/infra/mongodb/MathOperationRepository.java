@@ -1,4 +1,4 @@
-package br.com.jcsw.math.mongodb;
+package br.com.jcsw.math.infra.mongodb;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
 import java.util.Map;
 import org.apache.commons.lang3.ClassUtils;
@@ -58,6 +58,11 @@ public class ConsumerMessageListener implements MessageListener {
   }
 
   private ConsumerListener extractListenerFromMessageProperties(MessageProperties properties) {
-    return messageConsumerListeners.get(properties.getConsumerQueue());
+
+    if(messageConsumerListeners.containsKey(properties.getConsumerQueue())) {
+      return messageConsumerListeners.get(properties.getConsumerQueue());
+    }
+
+    throw new UndefinedConsumerListenerException(properties.getConsumerQueue());
   }
 }

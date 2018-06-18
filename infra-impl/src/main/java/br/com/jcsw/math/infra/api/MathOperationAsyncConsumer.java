@@ -1,7 +1,7 @@
 package br.com.jcsw.math.infra.api;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
-import br.com.jcsw.math.infra.mongodb.ConsumerListener;
+import br.com.jcsw.math.infra.rabbitmq.ConsumerListener;
 import org.springframework.stereotype.Component;
 
 @Component

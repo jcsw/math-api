@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
 import java.util.ArrayList;
 import java.util.HashMap;

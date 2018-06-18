@@ -1,9 +1,9 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.CONSUMER_PREFIX;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.DLQ_SUFFIX;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.PRODUCER_PREFIX;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.RETRY_SUFFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.DLQ_SUFFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.PRODUCER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.RETRY_SUFFIX;
 
 import java.util.List;
 

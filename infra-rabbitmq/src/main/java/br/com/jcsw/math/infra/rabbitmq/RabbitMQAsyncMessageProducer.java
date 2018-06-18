@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;

@@ -7,8 +7,8 @@ import static org.mockito.Mockito.when;
 
 import br.com.jcsw.math.domain.MathOperation;
 import br.com.jcsw.math.domain.OperationRequest;
-import br.com.jcsw.math.mongodb.MathOperationLogEntity;
-import br.com.jcsw.math.mongodb.MathOperationRepository;
+import br.com.jcsw.math.infra.mongodb.MathOperationLogEntity;
+import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Assert;

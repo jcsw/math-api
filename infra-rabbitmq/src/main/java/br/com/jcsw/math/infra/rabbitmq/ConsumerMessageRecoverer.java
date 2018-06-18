@@ -1,7 +1,5 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.DLQ_EXCHANGE;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.RETRY_EXCHANGE;
 import static org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer.X_EXCEPTION_MESSAGE;
 import static org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer.X_EXCEPTION_STACKTRACE;
 import static org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer.X_ORIGINAL_EXCHANGE;
@@ -69,7 +67,7 @@ public class ConsumerMessageRecoverer implements MessageRecoverer {
       headers.put(X_ORIGINAL_EXCHANGE, message.getMessageProperties().getReceivedExchange());
       headers.put(X_ORIGINAL_ROUTING_KEY, message.getMessageProperties().getReceivedRoutingKey());
 
-      rabbitTemplate.send(RETRY_EXCHANGE, queue, message);
+      rabbitTemplate.send(RabbitMQArguments.RETRY_EXCHANGE, queue, message);
 
       redelivery = true;
     } else {
@@ -78,7 +76,7 @@ public class ConsumerMessageRecoverer implements MessageRecoverer {
         new ConsumerMessageListener(rabbitTemplate, messageConsumerListeners).onMessageFallback(message);
       } catch (Exception ex) {
         logger.warn("method=redelivery label=SEND_TO_DLQ queue={} retriesHeader={}", queue, retriesHeader, ex);
-        rabbitTemplate.send(DLQ_EXCHANGE, queue, message);
+        rabbitTemplate.send(RabbitMQArguments.DLQ_EXCHANGE, queue, message);
       }
 
     }

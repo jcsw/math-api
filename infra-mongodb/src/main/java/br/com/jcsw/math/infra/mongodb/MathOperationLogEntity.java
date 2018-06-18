@@ -1,4 +1,4 @@
-package br.com.jcsw.math.mongodb;
+package br.com.jcsw.math.infra.mongodb;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,10 +1,4 @@
-package br.com.jcsw.math.infra.mongodb;
-
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.DLQ_EXCHANGE;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.RETRY_EXCHANGE;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.X_DEAD_LETTER_EXCHANGE;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.X_DEAD_LETTER_ROUTING_KEY;
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.X_MESSAGE_TTL;
+package br.com.jcsw.math.infra.rabbitmq;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,15 +50,15 @@ class RabbitMQ {
 
 
   private static void buildRetryExchange(RabbitAdmin admin) {
-    Exchange retryExchange = new DirectExchange(RETRY_EXCHANGE, true, false);
+    Exchange retryExchange = new DirectExchange(RabbitMQArguments.RETRY_EXCHANGE, true, false);
     admin.declareExchange(retryExchange);
-    exchanges.put(RETRY_EXCHANGE, retryExchange);
+    exchanges.put(RabbitMQArguments.RETRY_EXCHANGE, retryExchange);
   }
 
   private static void buildDlqExchange(RabbitAdmin admin) {
-    Exchange dlqExchange = new DirectExchange(DLQ_EXCHANGE, true, false);
+    Exchange dlqExchange = new DirectExchange(RabbitMQArguments.DLQ_EXCHANGE, true, false);
     admin.declareExchange(dlqExchange);
-    exchanges.put(DLQ_EXCHANGE, dlqExchange);
+    exchanges.put(RabbitMQArguments.DLQ_EXCHANGE, dlqExchange);
   }
 
   private static void buildExchange(RabbitAdmin admin, Producer producer) {
@@ -88,8 +82,8 @@ class RabbitMQ {
     logger.info("method=buildQueue {}", consumer.identifier());
 
     Map<String, Object> queueArgs = new HashMap<>();
-    queueArgs.put(X_DEAD_LETTER_EXCHANGE, StringUtils.EMPTY);
-    queueArgs.put(X_DEAD_LETTER_ROUTING_KEY, consumer.retryIdentifier());
+    queueArgs.put(RabbitMQArguments.X_DEAD_LETTER_EXCHANGE, StringUtils.EMPTY);
+    queueArgs.put(RabbitMQArguments.X_DEAD_LETTER_ROUTING_KEY, consumer.retryIdentifier());
     Queue queue = new Queue(consumer.identifier(), true, false, false, queueArgs);
     admin.declareQueue(queue);
     queues.put(consumer.identifier(), queue);
@@ -100,8 +94,8 @@ class RabbitMQ {
     logger.info("method=buildRetryQueue {}", consumer.retryIdentifier());
 
     Map<String, Object> retryQueueArgs = new HashMap<>();
-    retryQueueArgs.put(X_DEAD_LETTER_EXCHANGE, StringUtils.EMPTY);
-    retryQueueArgs.put(X_MESSAGE_TTL, consumer.getRetryTime());
+    retryQueueArgs.put(RabbitMQArguments.X_DEAD_LETTER_EXCHANGE, StringUtils.EMPTY);
+    retryQueueArgs.put(RabbitMQArguments.X_MESSAGE_TTL, consumer.getRetryTime());
     Queue retryQueue = new Queue(consumer.retryIdentifier(), true, false, false, retryQueueArgs);
     admin.declareQueue(retryQueue);
     return retryQueue;
@@ -130,7 +124,7 @@ class RabbitMQ {
     admin.declareBinding(//
         BindingBuilder //
             .bind(retryQueue)//
-            .to(exchanges.get(RETRY_EXCHANGE))//
+            .to(exchanges.get(RabbitMQArguments.RETRY_EXCHANGE))//
             .with(consumer.identifier())//
             .noargs());
   }
@@ -140,7 +134,7 @@ class RabbitMQ {
     admin.declareBinding(//
         BindingBuilder //
             .bind(dlqQueue)//
-            .to(exchanges.get(DLQ_EXCHANGE))//
+            .to(exchanges.get(RabbitMQArguments.DLQ_EXCHANGE))//
             .with(consumer.identifier())//
             .noargs());
   }

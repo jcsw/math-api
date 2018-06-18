@@ -1,13 +1,13 @@
 package br.com.jcsw.math.infra.api;
 
-import static br.com.jcsw.math.infra.mongodb.ConsumerListener.ASYNC_MATH_OPERATION;
-import static br.com.jcsw.math.infra.mongodb.ConsumerListener.PERSISTENCE_FALLBACK;
+import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.ASYNC_MATH_OPERATION;
+import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.PERSISTENCE_FALLBACK;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.domain.OperationRequest;
-import br.com.jcsw.math.infra.mongodb.RabbitMQAsyncMessageProducer;
-import br.com.jcsw.math.mongodb.AsyncMessageFallbackEntity;
-import br.com.jcsw.math.mongodb.AsyncMessageFallbackRepository;
+import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
+import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackEntity;
+import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

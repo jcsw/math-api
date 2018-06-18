@@ -2,8 +2,8 @@ package br.com.jcsw.math.infra.api;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.domain.OperationRequest;
-import br.com.jcsw.math.mongodb.MathOperationLogEntity;
-import br.com.jcsw.math.mongodb.MathOperationRepository;
+import br.com.jcsw.math.infra.mongodb.MathOperationLogEntity;
+import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;

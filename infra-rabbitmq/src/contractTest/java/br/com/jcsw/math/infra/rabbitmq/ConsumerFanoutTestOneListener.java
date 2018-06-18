@@ -1,6 +1,6 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.CONSUMER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConsumerDirectTestListener implements ConsumerListener {
+public class ConsumerFanoutTestOneListener implements ConsumerListener {
 
-  private static final Logger logger = LoggerFactory.getLogger(ConsumerDirectTestListener.class);
+  private static final Logger logger = LoggerFactory.getLogger(ConsumerFanoutTestOneListener.class);
 
   @Autowired
   private ConsumerMessageVerify consumerMessageVerify;
@@ -24,6 +24,6 @@ public class ConsumerDirectTestListener implements ConsumerListener {
 
   @Override
   public String consumerIdentifier() {
-    return CONSUMER_PREFIX + "direct_test";
+    return CONSUMER_PREFIX + "fanout_test_1";
   }
 }

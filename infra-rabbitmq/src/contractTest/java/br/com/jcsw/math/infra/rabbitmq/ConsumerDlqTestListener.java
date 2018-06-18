@@ -1,6 +1,6 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.CONSUMER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import org.springframework.beans.factory.annotation.Autowired;

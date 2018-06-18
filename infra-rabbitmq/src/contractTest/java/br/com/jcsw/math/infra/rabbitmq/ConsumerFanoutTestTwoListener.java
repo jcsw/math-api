@@ -1,6 +1,6 @@
-package br.com.jcsw.math.infra.mongodb;
+package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.mongodb.RabbitMQArguments.CONSUMER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
