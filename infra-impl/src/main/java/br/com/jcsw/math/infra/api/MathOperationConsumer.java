@@ -5,7 +5,7 @@ import br.com.jcsw.math.infra.rabbitmq.ConsumerListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MathOperationAsyncConsumer implements ConsumerListener {
+public class MathOperationConsumer implements ConsumerListener {
 
   @LogExecutionInfo
   @Override

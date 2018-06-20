@@ -40,17 +40,17 @@ public class RabbitMQIT {
     consumer.setRetryQty(2);
     consumer.setRetryTime(100);
 
-    String message = "direct-producer-" + new Date().getTime();
+    MessageVO messageVO = new MessageVO("direct-producer", new Date());
 
     //When
-    producerMessage.sendMessage(producerDirect.identifier(), message);
+    producerMessage.sendMessage(producerDirect.identifier(), messageVO);
     waitConsumeMessage();
 
     //Then
     long expectedAttempts = 1;
 
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
-    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), messageVO));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), messageVO));
   }
 
   @Test
@@ -73,20 +73,22 @@ public class RabbitMQIT {
     consumer2.setRetryQty(2);
     consumer2.setRetryTime(100);
 
-    String message = "fanout-producer-" + new Date().getTime();
+    MessageVO messageVO = new MessageVO("fanout-producer", new Date());
 
     //When
-    producerMessage.sendMessage(producerFanout.identifier(), message);
+    producerMessage.sendMessage(producerFanout.identifier(), messageVO);
     waitConsumeMessage();
 
     //Then
     long expectedAttempts = 1;
 
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer1.identifier(), message));
-    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer1.identifier(), message));
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer1.identifier(), messageVO));
+    assertEquals(expectedAttempts,
+        consumerMessageVerify.countMessageConsumeAttempts(consumer1.identifier(), messageVO));
 
-    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer2.identifier(), message));
-    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer2.identifier(), message));
+    assertTrue(consumerMessageVerify.verifyMessageConsumed(consumer2.identifier(), messageVO));
+    assertEquals(expectedAttempts,
+        consumerMessageVerify.countMessageConsumeAttempts(consumer2.identifier(), messageVO));
 
   }
 
@@ -131,18 +133,18 @@ public class RabbitMQIT {
     consumer.setRetryQty(3);
     consumer.setRetryTime(10);
 
-    String message = "fallback" + new Date().getTime();
+    MessageVO messageVO = new MessageVO("fallback", new Date());
 
     //When
-    producerMessage.sendMessage(producer.identifier(), message);
+    producerMessage.sendMessage(producer.identifier(), messageVO);
     waitConsumeMessage();
 
     //Then
     long expectedAttempts = 4;
 
-    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
-    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
-    assertTrue(consumerMessageVerify.verifyMessageFallback(consumer.identifier(), message));
+    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), messageVO));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), messageVO));
+    assertTrue(consumerMessageVerify.verifyMessageFallback(consumer.identifier(), messageVO));
   }
 
   @Test
@@ -159,20 +161,20 @@ public class RabbitMQIT {
     consumer.setRetryQty(3);
     consumer.setRetryTime(10);
 
-    String message = "dlq" + new Date().getTime();
+    MessageVO messageVO = new MessageVO("dlq", new Date());
 
     //When
-    producerMessage.sendMessage(producer.identifier(), message);
+    producerMessage.sendMessage(producer.identifier(), messageVO);
     waitConsumeMessage();
 
     //Then
     long expectedAttempts = 4;
 
-    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), message));
-    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), message));
+    assertFalse(consumerMessageVerify.verifyMessageConsumed(consumer.identifier(), messageVO));
+    assertEquals(expectedAttempts, consumerMessageVerify.countMessageConsumeAttempts(consumer.identifier(), messageVO));
 
     Object dlqMessage = rabbitTemplate.receiveAndConvert(consumer.dlqIdentifier());
-    assertEquals(message, dlqMessage);
+    assertEquals(messageVO, dlqMessage);
 
   }
 
