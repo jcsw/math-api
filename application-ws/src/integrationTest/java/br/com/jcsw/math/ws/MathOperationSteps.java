@@ -3,7 +3,6 @@ package br.com.jcsw.math.ws;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-import br.com.jcsw.math.TestConfiguration;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

@@ -11,7 +11,7 @@ public class MessageVO {
 
   public MessageVO(String value, Date date) {
     this.value = value;
-    this.date = date;
+    this.date = new Date(date.getTime());
   }
 
   public MessageVO() {
@@ -33,7 +33,6 @@ public class MessageVO {
 
   @Override
   public int hashCode() {
-
     return Objects.hash(value, date);
   }
 
@@ -46,10 +45,10 @@ public class MessageVO {
   }
 
   public Date getDate() {
-    return date;
+    return new Date(date.getTime());
   }
 
   public void setDate(Date date) {
-    this.date = date;
+    this.date = new Date(date.getTime());
   }
 }

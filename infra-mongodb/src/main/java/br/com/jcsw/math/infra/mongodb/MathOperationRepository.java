@@ -4,4 +4,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface MathOperationRepository extends MongoRepository<MathOperationLogEntity, String> {
 
+  MathOperationLogEntity findByIdt(String idt);
+
 }

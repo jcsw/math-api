@@ -2,15 +2,11 @@ package br.com.jcsw.math.infra.mongodb;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-import org.springframework.data.annotation.Id;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "math-operation")
-public class MathOperationLogEntity {
-
-  @Id
-  private String id;
+public class MathOperationLogEntity extends AbstractEntity {
 
   private String operation;
 
@@ -29,28 +25,13 @@ public class MathOperationLogEntity {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if(this == o) {
-      return true;
-    }
-    if(o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    MathOperationLogEntity that = (MathOperationLogEntity) o;
-    return Objects.equals(id, that.id);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id);
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("idt", super.getIdt())
+        .append("operation", operation)
+        .append("parameters", parameters)
+        .append("result", result)
+        .toString();
   }
 
   public String getOperation() {

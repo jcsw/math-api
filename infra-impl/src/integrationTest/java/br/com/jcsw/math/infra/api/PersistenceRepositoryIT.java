@@ -60,7 +60,7 @@ public class PersistenceRepositoryIT {
     operationRequest.setParameters(Arrays.asList(BigDecimal.TEN, BigDecimal.ZERO));
     BigDecimal result = BigDecimal.TEN;
 
-    when(mathOperationRepository.insert(new MathOperationLogEntity()))
+    when(mathOperationRepository.insert(any(MathOperationLogEntity.class)))
         .thenThrow(new RuntimeException("Connection error"));
 
     persistenceRepository.persistMathOperationLog(operationRequest, result);

@@ -1,14 +1,12 @@
 package br.com.jcsw.math.infra.mongodb;
 
 import java.util.Date;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -16,24 +14,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MongodbIT {
 
   @Autowired
-  private MongoTemplate mongoTemplate;
-
-  @Autowired
-  private CollectionTestRepository collectionTestRepository;
+  private FakeRepository fakeRepository;
 
   @Test
   public void insertCollection() {
 
-    String data = "test." + new Date().getTime();
+    String data = "test-" + new Date().getTime();
 
-    CollectionTest collectionTest = new CollectionTest(data);
-    collectionTestRepository.insert(collectionTest);
+    FakeEntity fakeEntity = new FakeEntity(data);
+    fakeRepository.insert(fakeEntity);
 
-    List<CollectionTest> collectionTestList = mongoTemplate.findAll(CollectionTest.class);
+    FakeEntity fakeEntityFind = fakeRepository.findByIdt(fakeEntity.getIdt());
 
-    Assert.assertEquals(1, collectionTestList.size());
-
-    Assert.assertEquals(collectionTest, collectionTestList.get(0));
+    Assert.assertEquals(fakeEntity, fakeEntityFind);
   }
 
 }
