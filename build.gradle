@@ -205,6 +205,7 @@ project('application-ws') {
         testCompile 'io.cucumber:cucumber-spring:3.0.2'
         testCompile 'io.rest-assured:rest-assured:3.0.1'
         testCompile 'io.rest-assured:json-schema-validator:3.0.1'
+        testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
     }
 }
 
