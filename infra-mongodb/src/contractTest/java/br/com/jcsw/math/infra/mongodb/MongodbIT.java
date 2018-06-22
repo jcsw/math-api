@@ -24,7 +24,7 @@ public class MongodbIT {
     FakeEntity fakeEntity = new FakeEntity(data);
     fakeRepository.insert(fakeEntity);
 
-    FakeEntity fakeEntityFind = fakeRepository.findByIdt(fakeEntity.getIdt());
+    FakeEntity fakeEntityFind = fakeRepository.findByIdt(fakeEntity.getIdt()).orElseThrow();
 
     Assert.assertEquals(fakeEntity, fakeEntityFind);
   }

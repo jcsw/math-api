@@ -11,7 +11,7 @@ hystrix:
         isolation:
           strategy: SEMAPHORE
           thread:
-            timeoutInMilliseconds: 2000
+            timeoutInMilliseconds: 3000
 
 ### Feign ###
 feign:
@@ -21,8 +21,8 @@ feign:
     config:
 ### Feature Gateway ###
       feature-toggle:
-        connectTimeout: 1000
-        readTimeout: 2000
+        connectTimeout: 2000
+        readTimeout: 3000
         loggerLevel: full
 
 ### Ribbon ###
@@ -33,7 +33,7 @@ ribbon:
 feature-toggle:
   ribbon:
     listOfServers: http://localhost:9801
-    ConnectTimeout: 1000
-    readTimeout: 2000
-    maxTotalHttpConnections: 1
-    maxConnectionsPerHost: 1
+    ConnectTimeout: 2000
+    readTimeout: 3000
+    maxTotalHttpConnections: 2
+    maxConnectionsPerHost: 2

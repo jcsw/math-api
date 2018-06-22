@@ -1,9 +1,10 @@
 package br.com.jcsw.math.infra.mongodb;
 
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface FakeRepository extends MongoRepository<FakeEntity, String> {
 
-  FakeEntity findByIdt(String idt);
+  Optional<FakeEntity> findByIdt(String idt);
 
 }
