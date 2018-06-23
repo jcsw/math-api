@@ -1,0 +1,58 @@
+### Server ###
+server:
+  port: ${port:9900}
+
+### Logging ###
+logging:
+  level:
+    ROOT: INFO
+  pattern:
+      console: "%d{yyyy-MM-dd HH:mm:ss} %magenta(%thread) %-5level %logger{5} %msg%n%ex{3}"
+
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### RabbitMQ ###
+  rabbitmq:
+    host: localhost
+    port: 5672
+    virtual-host: /math-api
+    username: math-api_adm
+    password: math-api_adm
+    connection-timeout: 500
+    cache:
+      channel:
+        checkout-timeout: 100
+        size: 5
+      connection:
+        mode: channel
+
+### MongoDB ###
+  data:
+      mongodb:
+        uri: mongodb://math-api_adm:math-api_adm@localhost:27017/admin?connectTimeoutMS=300&socketTimeoutMS=500&serverSelectionTimeoutMS=300&authMechanism=SCRAM-SHA-1
+
+### Feign ###
+feign:
+  client:
+    config:
+### Correio ###
+      correio:
+        connectTimeout: 300
+        readTimeout: 1000
+        loggerLevel: basic
+
+### Ribbon ###
+ribbon:
+  eureka:
+    enabled: false
+
+correio:
+  ribbon:
+    listOfServers: http://viacep.com.br
+    ConnectTimeout: 500
+    ReadTimeout: 2000
+    MaxTotalHttpConnections: 3
+    MaxConnectionsPerHost: 3

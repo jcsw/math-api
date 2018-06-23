@@ -1,0 +1,27 @@
+### Spring ###
+spring:
+  application:
+    name: math-api
+
+### Feign ###
+feign:
+  client:
+    config:
+### Correio ###
+      correio:
+        connectTimeout: 300
+        readTimeout: 1000
+        loggerLevel: basic
+
+### Ribbon ###
+ribbon:
+  eureka:
+    enabled: false
+
+correio:
+  ribbon:
+    listOfServers: http://viacep.com.br
+    ConnectTimeout: 500
+    ReadTimeout: 2000
+    MaxTotalHttpConnections: 1
+    MaxConnectionsPerHost: 1

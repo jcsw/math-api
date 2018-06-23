@@ -32,291 +32,212 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'jacoco'
-    apply plugin: 'com.github.spotbugs'
-    apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'jacoco'
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.github.spotbugs'
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'docker'
+apply plugin: 'docker-compose'
 
-    sourceCompatibility = 10
-    targetCompatibility = 10
+sourceCompatibility = 10
+targetCompatibility = 10
 
-    repositories {
-        jcenter()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-    }
+repositories {
+    jcenter()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
 
-    ext {
-        springBootVersion = '2.0.3.RELEASE'
-        springCloudVersion = 'Finchley.RC2'
-    }
+ext {
+    springBootVersion = '2.0.3.RELEASE'
+    springCloudVersion = 'Finchley.RC2'
+}
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
-        }
-    }
+dependencies {
+    compile project(':spring-aop-log')
 
-    dependencies {
-        compile 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
-        compile 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
-        compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
-        compile 'com.github.spotbugs:spotbugs:3.1.3'
-        compile 'javax.xml.bind:jaxb-api:2.3.0'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    compile 'org.springframework.boot:spring-boot-starter-amqp'
+    compile 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+    compile 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
+    compile 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    compile 'com.github.spotbugs:spotbugs:3.1.3'
+    compile 'javax.xml.bind:jaxb-api:2.3.0'
 
-        testCompile 'org.springframework.boot:spring-boot-starter-test'
-        testCompile 'io.cucumber:cucumber-java8:3.0.2'
-        testCompile 'io.cucumber:cucumber-junit:3.0.2'
-    }
+    runtime 'org.springframework.boot:spring-boot-devtools'
 
-    configurations {
-        compile.exclude module: 'spring-boot-starter-tomcat'
-        compile.exclude group: 'org.apache.tomcat'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testCompile 'io.cucumber:cucumber-java8:3.0.2'
+    testCompile 'io.cucumber:cucumber-junit:3.0.2'
+    testCompile 'com.github.tomakehurst:wiremock:2.18.0'
+}
 
-        integrationTestCompile.extendsFrom testCompile
-        integrationTestRuntime.extendsFrom testRuntime
-
-        contractTestCompile.extendsFrom testCompile
-        contractTestRuntime.extendsFrom testRuntime
-    }
-
-    sourceSets {
-        contractTest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/contractTest/java')
-            }
-            resources.srcDir file('src/contractTest/resources')
-        }
-    }
-
-    sourceSets {
-        integrationTest {
-            java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
-                srcDir file('src/integrationTest/java')
-            }
-            resources.srcDir file('src/integrationTest/resources')
-        }
-    }
-
-    task integrationTest(type: Test) {
-        testClassesDirs = sourceSets.integrationTest.output.classesDirs
-        classpath = sourceSets.integrationTest.runtimeClasspath
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
-    }
-
-    task contractTest(type: Test) {
-        testClassesDirs = sourceSets.contractTest.output.classesDirs
-        classpath = sourceSets.contractTest.runtimeClasspath
-
-        testLogging {
-            events "passed", "skipped", "failed"
-        }
-    }
-
-    jacoco {
-        toolVersion = "0.8.1"
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled false
-            csv.enabled false
-            html.destination file("${buildDir}/jacocoHtml")
-        }
-    }
-
-    task spotbugs(
-            group: "Verification",
-            description: "Marker task to enabled spotbugs."
-    )
-
-    spotbugs {
-        toolVersion = '3.1.3'
-    }
-
-    tasks.withType(com.github.spotbugs.SpotBugsTask) {
-        reports {
-            xml.enabled = false
-            html.enabled = true
-        }
-    }
-
-    gradle.taskGraph.whenReady { taskGraph ->
-        tasks.spotbugsMain.onlyIf {
-            taskGraph.hasTask((tasks.spotbugs))
-        }
-        tasks.spotbugsTest.onlyIf {
-            taskGraph.hasTask((tasks.spotbugs))
-        }
-        tasks.spotbugsIntegrationTest.onlyIf {
-            taskGraph.hasTask((tasks.spotbugs))
-        }
-        tasks.spotbugsContractTest.onlyIf {
-            taskGraph.hasTask((tasks.spotbugs))
-        }
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
     }
 }
 
-project('application-ws') {
-    apply plugin: 'application'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'docker'
-    apply plugin: 'docker-compose'
-    apply plugin: 'org.asciidoctor.convert'
+mainClassName = 'br.com.jcsw.math.MathApiApplication'
 
-    mainClassName = 'br.com.jcsw.math.MathApiApplication'
+jacoco {
+    toolVersion = "0.8.1"
+}
 
-    ext {
-        snippetsDir = file('build/snippets')
-    }
+configurations {
+    compile.exclude module: 'spring-boot-starter-tomcat'
+    compile.exclude group: 'org.apache.tomcat'
 
-    test {
-        outputs.dir snippetsDir
-    }
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
 
-    asciidoctor {
-        attributes 'snippets': snippetsDir
-        sourceDir 'src/main/asciidoc'
-        outputDir "build/asciidoc"
-        inputs.dir snippetsDir
-        dependsOn test
-    }
+    contractTestCompile.extendsFrom testCompile
+    contractTestRuntime.extendsFrom testRuntime
+}
 
-    bootJar {
-        dependsOn asciidoctor
-        from ("${asciidoctor.outputDir}/html5") {
-            into 'static/docs'
+sourceSets {
+    contractTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/contractTest/java')
         }
-    }
-
-    task copyRestDocs(type: Copy) {
-        dependsOn asciidoctor
-        from "${asciidoctor.outputDir}/html5"
-        into "${project.buildDir}/resources/main/static/docs"
-    }
-
-    bootRun {
-        dependsOn copyRestDocs
-    }
-
-    dockerCompose {
-        useComposeFiles = ["$project.rootDir/docker/dependencies/mongodb/docker-compose.yml", "$project.rootDir/docker/dependencies/rabbitmq/docker-compose.yml"]
-        stopContainers = false
-    }
-
-    dockerCompose.isRequiredBy(bootRun)
-
-    distDocker {
-        baseImage "openjdk:10-jdk-slim"
-        maintainer 'Jonas Cezar "jcezar.al@gmail.com"'
-        tag = "jcezar/math-api"
-        exposePort 9900
-    }
-
-    dependencies {
-        compile project(':spring-aop-log')
-        compile project(':domain-api')
-        compile project(':infra-api')
-
-        compile 'org.springframework.boot:spring-boot-starter-web'
-        compile 'org.springframework.boot:spring-boot-starter-undertow'
-        compile 'org.springframework.boot:spring-boot-starter-actuator'
-        compile 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-
-        runtime project(':domain-impl')
-        runtime project(':infra-impl')
-
-        runtime 'org.springframework.boot:spring-boot-devtools'
-
-        testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+        resources.srcDir file('src/contractTest/resources')
     }
 }
 
-project('domain-api') {
-    dependencies {
-        compile 'org.apache.commons:commons-lang3'
-        compile 'io.springfox:springfox-swagger2:2.8.0'
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/java')
+        }
+        resources.srcDir file('src/integrationTest/resources')
     }
 }
 
-project('domain-impl') {
-    dependencies {
-        compile project(':spring-aop-log')
-        compile project(':domain-api')
-        compile project(':infra-api')
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
     }
 }
 
-project('infra-api') {
-    dependencies {
-        compile project(':domain-api')
+task contractTest(type: Test) {
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+
+    testLogging {
+        events "passed", "skipped", "failed"
     }
 }
 
-project('infra-impl') {
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
 
-    dependencies {
-        compile project(':spring-aop-log')
-        compile project(':infra-api')
-        compile project(':infra-mongodb')
-        compile project(':infra-rabbitmq')
-        compile project(':infra-feature-toggle')
+    executionData(test, integrationTest, contractTest)
+}
+
+task spotbugs(
+        group: "Verification",
+        description: "Marker task to enabled spotbugs."
+)
+
+spotbugs {
+    toolVersion = '3.1.3'
+}
+
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
     }
 }
 
-project('infra-feature-toggle') {
-
-    dependencies {
-        compile project(':spring-aop-log')
-
-        testCompile 'com.github.tomakehurst:wiremock:2.18.0'
+gradle.taskGraph.whenReady { taskGraph ->
+    tasks.spotbugsMain.onlyIf {
+        taskGraph.hasTask((tasks.spotbugs))
+    }
+    tasks.spotbugsTest.onlyIf {
+        taskGraph.hasTask((tasks.spotbugs))
+    }
+    tasks.spotbugsIntegrationTest.onlyIf {
+        taskGraph.hasTask((tasks.spotbugs))
+    }
+    tasks.spotbugsContractTest.onlyIf {
+        taskGraph.hasTask((tasks.spotbugs))
     }
 }
 
-project('infra-mongodb') {
+ext {
+    snippetsDir = file('build/snippets')
+}
 
-    apply plugin: 'docker-compose'
+test {
+    outputs.dir snippetsDir
+}
 
-    dockerCompose {
-        useComposeFiles = ["$project.projectDir/src/contractTest/resources/docker-compose.yml"]
+asciidoctor {
+    attributes 'snippets': snippetsDir
+    sourceDir 'src/main/asciidoc'
+    outputDir "build/asciidoc"
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
+}
+
+task copyRestDocs(type: Copy) {
+    dependsOn asciidoctor
+    from "${asciidoctor.outputDir}/html5"
+    into "${project.buildDir}/resources/main/static/docs"
+}
+
+bootRun {
+    dependsOn copyRestDocs
+}
+
+dockerCompose {
+    bootNested {
+        useComposeFiles = ["$project.rootDir/docker/dependencies/mongodb/docker-compose.yml",
+                           "$project.rootDir/docker/dependencies/rabbitmq/docker-compose.yml"]
         stopContainers = true
-        removeContainers = true
+        isRequiredBy(project.tasks.bootRun)
     }
 
-    dockerCompose.isRequiredBy(contractTest)
-
-    dependencies {
-        compile project(':spring-aop-log')
-
-        compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    contractTestNested {
+        useComposeFiles = ["$project.projectDir/src/contractTest/resources/mongodb/docker-compose.yml",
+                           "$project.projectDir/src/contractTest/resources/rabbitmq/docker-compose.yml"]
+        stopContainers = true
+        isRequiredBy(project.tasks.contractTest)
     }
 }
 
-project('infra-rabbitmq') {
-
-    apply plugin: 'docker-compose'
-
-    dockerCompose {
-        useComposeFiles = ["$project.projectDir/src/contractTest/resources/docker-compose.yml"]
-        stopContainers = true
-        removeContainers = true
-    }
-
-    dockerCompose.isRequiredBy(contractTest)
-
-    dependencies {
-        compile project(':spring-aop-log')
-
-        compile 'org.springframework.boot:spring-boot-starter-amqp'
-    }
+distDocker {
+    baseImage "openjdk:10-jdk-slim"
+    maintainer 'Jonas Cezar "jcezar.al@gmail.com"'
+    tag = "jcezar/math-api"
+    exposePort 9900
 }
