@@ -22,6 +22,12 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureRestDocs(outputDir = "build/snippets")
 public class MathControllerTest {
 
+  private static final String URL = "/math/operation";
+  private static final String REQUEST = "{\"operation\": \"%s\", \"parameters\": [%s, %s]}";
+  private static final String RESPONSE = "{\"result\":%s}";
+
+  private static final String PATH_DOCS = "math";
+
   @Autowired
   private MockMvc mockMvc;
 
@@ -32,13 +38,14 @@ public class MathControllerTest {
     String firstParameter = "1.0";
     String secondParameter = "1.5";
 
-    mockMvc.perform(post("/math/operation")
+    String expectedResponse = "2.5";
+
+    mockMvc.perform(post(URL)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .content(String
-            .format("{\"operation\": \"%s\", \"parameters\": [%s, %s]}", operation, firstParameter, secondParameter)))
+        .content(String.format(REQUEST, operation, firstParameter, secondParameter)))
         .andExpect(status().isOk())
-        .andExpect(content().string(equalTo("{\"result\":2.5}")))
-        .andDo(document("math"));
+        .andExpect(content().string(equalTo(String.format(RESPONSE, expectedResponse))))
+        .andDo(document(PATH_DOCS));
   }
 
 }

@@ -15,3 +15,8 @@ Run
 ```
 ./gradlew bootRun
 ```
+
+To access doc
+```
+http://localhost:9900/docs/index.html
+```

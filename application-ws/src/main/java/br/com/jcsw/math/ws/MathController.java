@@ -1,10 +1,9 @@
 package br.com.jcsw.math.ws;
 
+import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.domain.MathService;
 import br.com.jcsw.math.domain.OperationRequest;
 import br.com.jcsw.math.domain.OperationResponse;
-import br.com.jcsw.math.aop.LogExecutionInfo;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(description = "Math API")
 @RestController
 public class MathController {
 
