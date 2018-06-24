@@ -12,7 +12,6 @@ class MathOperationExecutor {
         return parameters.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
       default:
         throw new IllegalArgumentException("Invalid operation > " + operation);
-
     }
   }
 

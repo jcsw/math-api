@@ -10,8 +10,6 @@ import org.junit.Assert;
 
 public class MathOperationSteps {
 
-  private MathOperationExecutor mathOperationExecutor = new MathOperationExecutor();
-
   private MathOperation mathOperation;
   private List<BigDecimal> parameters;
 
@@ -28,7 +26,7 @@ public class MathOperationSteps {
 
   @When("^Do math operation execute")
   public void do_math_operation_execute() {
-    operationResult = mathOperationExecutor.execute(mathOperation, parameters);
+    operationResult = MathOperationExecutor.execute(mathOperation, parameters);
   }
 
   @Then("^I should respond (\\d+\\.\\d+)")
