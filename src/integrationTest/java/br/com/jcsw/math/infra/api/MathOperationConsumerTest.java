@@ -16,7 +16,6 @@ public class MathOperationConsumerTest {
   @Autowired
   private MathOperationConsumer mathOperationConsumer;
 
-
   @Test
   public void shouldReturnNotImplementedWhenReceiveMessage() {
 

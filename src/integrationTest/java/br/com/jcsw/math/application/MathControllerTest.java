@@ -32,7 +32,7 @@ public class MathControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  public void shouldReturnSumOperationResult() throws Exception {
+  public void shouldReturnOperationResult() throws Exception {
 
     String operation = "SUM";
     String firstParameter = "1.0";
