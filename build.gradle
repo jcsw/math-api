@@ -190,7 +190,7 @@ ext {
     snippetsDir = file('build/snippets')
 }
 
-test {
+integrationTest {
     outputs.dir snippetsDir
 }
 
@@ -199,7 +199,7 @@ asciidoctor {
     sourceDir 'src/main/asciidoc'
     outputDir "build/asciidoc"
     inputs.dir snippetsDir
-    dependsOn test
+    dependsOn integrationTest
 }
 
 bootJar {
