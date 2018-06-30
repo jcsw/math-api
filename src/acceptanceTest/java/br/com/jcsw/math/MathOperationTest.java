@@ -17,9 +17,10 @@ public class MathOperationTest {
   private static final String RESPONSE = "{\"result\":%s}";
 
   @Test
-  public void shouldReturnOperationResult() {
+  public void shouldExecuteMathOperation() {
 
     String operation = "SUM";
+
     String firstParameter = "1.0";
     String secondParameter = "1.5";
 
@@ -33,8 +34,6 @@ public class MathOperationTest {
         .then()
         .statusCode(HttpStatus.OK.value())
         .body(equalTo(String.format(RESPONSE, expectedResponse)));
-
-
   }
 
 }
