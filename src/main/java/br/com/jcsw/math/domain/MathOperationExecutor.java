@@ -10,6 +10,8 @@ class MathOperationExecutor {
     switch (operation) {
       case SUM:
         return parameters.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+      case SUB:
+        return parameters.stream().reduce(BigDecimal::subtract).orElse(BigDecimal.ZERO);
       default:
         throw new IllegalArgumentException("Invalid operation > " + operation);
     }
