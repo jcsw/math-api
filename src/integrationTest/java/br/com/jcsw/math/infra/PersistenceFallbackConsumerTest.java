@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

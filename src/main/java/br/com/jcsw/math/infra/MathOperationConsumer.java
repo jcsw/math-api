@@ -1,11 +1,11 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
 import br.com.jcsw.math.infra.rabbitmq.ConsumerListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MathOperationConsumer implements ConsumerListener {
+class MathOperationConsumer implements ConsumerListener {
 
   @LogExecutionInfo
   @Override

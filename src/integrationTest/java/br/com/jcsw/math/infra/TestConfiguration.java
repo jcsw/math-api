@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import br.com.jcsw.math.infra.correio.CorreioHttpClient;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;

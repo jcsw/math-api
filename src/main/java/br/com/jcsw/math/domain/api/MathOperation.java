@@ -1,4 +1,4 @@
-package br.com.jcsw.math.domain;
+package br.com.jcsw.math.domain.api;
 
 public enum MathOperation {
 

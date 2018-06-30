@@ -1,7 +1,8 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import static org.mockito.Mockito.when;
 
+import br.com.jcsw.math.infra.api.Address;
 import br.com.jcsw.math.infra.correio.CorreioHttpClient;
 import java.util.Map;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;

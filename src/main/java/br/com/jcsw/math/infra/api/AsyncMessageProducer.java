@@ -1,6 +1,6 @@
 package br.com.jcsw.math.infra.api;
 
-import br.com.jcsw.math.domain.OperationRequest;
+import br.com.jcsw.math.domain.api.OperationRequest;
 
 public interface AsyncMessageProducer {
 

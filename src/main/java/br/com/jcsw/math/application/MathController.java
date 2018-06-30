@@ -1,9 +1,9 @@
 package br.com.jcsw.math.application;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
-import br.com.jcsw.math.domain.MathService;
-import br.com.jcsw.math.domain.OperationRequest;
-import br.com.jcsw.math.domain.OperationResponse;
+import br.com.jcsw.math.domain.api.MathService;
+import br.com.jcsw.math.domain.api.OperationRequest;
+import br.com.jcsw.math.domain.api.OperationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

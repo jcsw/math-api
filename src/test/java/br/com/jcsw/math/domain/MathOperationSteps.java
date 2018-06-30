@@ -1,5 +1,6 @@
 package br.com.jcsw.math.domain;
 
+import br.com.jcsw.math.domain.api.MathOperation;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -26,7 +27,7 @@ public class MathOperationSteps {
 
   @When("^Do math operation execute")
   public void do_math_operation_execute() {
-    operationResult = MathOperationExecutor.execute(mathOperation, parameters);
+    operationResult = MathExecutor.execute(mathOperation, parameters);
   }
 
   @Then("^I should respond (\\d+\\.\\d+)")

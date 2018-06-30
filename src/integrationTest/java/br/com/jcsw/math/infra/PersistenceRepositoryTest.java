@@ -1,12 +1,14 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import br.com.jcsw.math.domain.MathOperation;
-import br.com.jcsw.math.domain.OperationRequest;
+import br.com.jcsw.math.domain.api.MathOperation;
+import br.com.jcsw.math.domain.api.OperationRequest;
+import br.com.jcsw.math.infra.api.AsyncMessageProducer;
+import br.com.jcsw.math.infra.api.PersistenceRepository;
 import br.com.jcsw.math.infra.mongodb.MathOperationLogEntity;
 import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import java.math.BigDecimal;

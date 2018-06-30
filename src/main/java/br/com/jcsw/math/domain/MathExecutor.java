@@ -1,9 +1,10 @@
 package br.com.jcsw.math.domain;
 
+import br.com.jcsw.math.domain.api.MathOperation;
 import java.math.BigDecimal;
 import java.util.List;
 
-class MathOperationExecutor {
+class MathExecutor {
 
   static BigDecimal execute(MathOperation operation, List<BigDecimal> parameters) {
 

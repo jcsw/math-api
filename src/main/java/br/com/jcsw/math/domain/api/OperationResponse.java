@@ -1,4 +1,4 @@
-package br.com.jcsw.math.domain;
+package br.com.jcsw.math.domain.api;
 
 import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;

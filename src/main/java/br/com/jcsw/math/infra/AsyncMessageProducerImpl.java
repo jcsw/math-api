@@ -1,10 +1,11 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.ASYNC_MATH_OPERATION;
 import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.PERSISTENCE_FALLBACK;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
-import br.com.jcsw.math.domain.OperationRequest;
+import br.com.jcsw.math.domain.api.OperationRequest;
+import br.com.jcsw.math.infra.api.AsyncMessageProducer;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackEntity;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
 import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AsyncMessageProducerImpl implements AsyncMessageProducer {
+class AsyncMessageProducerImpl implements AsyncMessageProducer {
 
   @Autowired
   private RabbitMQAsyncMessageProducer rabbitMQAsyncMessageProducer;

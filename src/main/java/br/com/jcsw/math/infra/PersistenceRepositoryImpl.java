@@ -1,7 +1,9 @@
-package br.com.jcsw.math.infra.api;
+package br.com.jcsw.math.infra;
 
 import br.com.jcsw.math.aop.LogExecutionInfo;
-import br.com.jcsw.math.domain.OperationRequest;
+import br.com.jcsw.math.domain.api.OperationRequest;
+import br.com.jcsw.math.infra.api.AsyncMessageProducer;
+import br.com.jcsw.math.infra.api.PersistenceRepository;
 import br.com.jcsw.math.infra.mongodb.MathOperationLogEntity;
 import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -10,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PersistenceRepositoryImpl implements PersistenceRepository {
+class PersistenceRepositoryImpl implements PersistenceRepository {
 
   @Autowired
   private MathOperationRepository mathOperationRepository;
