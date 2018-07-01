@@ -5,10 +5,15 @@ import java.util.Map;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+/**
+ * Sets up the use of chaos monkey
+ */
 @Component
 public class ChaosMonkeyConfiguration implements InitializingBean {
 
   private Map<String, ChaosMonkeySettings> monkeySettingsMap;
+
+  private boolean enabled = false;
 
   @Override
   public void afterPropertiesSet() {
@@ -17,12 +22,29 @@ public class ChaosMonkeyConfiguration implements InitializingBean {
     }
   }
 
-  public ChaosMonkeySettings getMonkeySettingsByMethod(String methodName) {
+  Map<String, ChaosMonkeySettings> listChaosMonkeySettings() {
+    return new HashMap<>(monkeySettingsMap);
+  }
+
+  void changeChaosMonkeySettings(String methodName, ChaosMonkeySettings chaosMonkeySettings) {
+    if(monkeySettingsMap.containsKey(methodName)) {
+      monkeySettingsMap.put(methodName, chaosMonkeySettings);
+    }
+  }
+
+  void enableMethodToChaosMonkey(String methodName) {
+    monkeySettingsMap.put(methodName, null);
+  }
+
+  ChaosMonkeySettings getMonkeySettingsByMethod(String methodName) {
     return monkeySettingsMap.getOrDefault(methodName, null);
   }
 
-  public void setMonkeySettingsByMethod(String methodName, ChaosMonkeySettings chaosMonkeySettings) {
-    monkeySettingsMap.put(methodName, chaosMonkeySettings);
+  boolean isEnabled() {
+    return enabled;
   }
 
+  void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 }

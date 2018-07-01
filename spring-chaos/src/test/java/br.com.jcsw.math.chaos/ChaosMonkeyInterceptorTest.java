@@ -1,5 +1,6 @@
 package br.com.jcsw.math.chaos;
 
+import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +19,23 @@ public class ChaosMonkeyInterceptorTest {
   private ChaosMonkeyConfiguration chaosMonkeyConfiguration;
 
   @Test
-  public void shouldExecuteNormalFlow() {
+  public void shouldEnableChaosMonkeyForAnnotationMethod() {
+
+    Map<String, ChaosMonkeySettings> chaosMonkeySettings = chaosMonkeyConfiguration.listChaosMonkeySettings();
+
+    Assert.assertNotNull(chaosMonkeySettings);
+    Assert.assertEquals(1, chaosMonkeySettings.size());
+    Assert.assertTrue(chaosMonkeySettings.containsKey("executeAnyOperation"));
+  }
+
+  @Test
+  public void shouldExecuteNormalFlowWhenNotSetSettings() {
 
     String expectResult = "OK";
+    String methodName = "executeAnyOperation";
+
+    chaosMonkeyConfiguration.setEnabled(true);
+    chaosMonkeyConfiguration.changeChaosMonkeySettings(methodName, null);
 
     String result = infraComponent.executeAnyOperation();
 
@@ -28,7 +43,24 @@ public class ChaosMonkeyInterceptorTest {
   }
 
   @Test
-  public void shouldExecuteWithDenialError() {
+  public void shouldExecuteNormalFlowWhenChaosMonkeyIsDisabled() {
+
+    String expectResult = "OK";
+
+    ChaosMonkeySettings chaosMonkeySettings = new ChaosMonkeySettings();
+    chaosMonkeySettings.setChaosType(ChaosType.DENIAL);
+    String methodName = "executeAnyOperation";
+
+    chaosMonkeyConfiguration.setEnabled(false);
+    chaosMonkeyConfiguration.changeChaosMonkeySettings(methodName, chaosMonkeySettings);
+
+    String result = infraComponent.executeAnyOperation();
+
+    Assert.assertEquals(expectResult, result);
+  }
+
+  @Test
+  public void shouldReturnErrorWhenSettingsDenial() {
 
     String expectExceptionMessage = "ChaosMonkey";
 
@@ -36,7 +68,8 @@ public class ChaosMonkeyInterceptorTest {
     chaosMonkeySettings.setChaosType(ChaosType.DENIAL);
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setMonkeySettingsByMethod(methodName, chaosMonkeySettings);
+    chaosMonkeyConfiguration.setEnabled(true);
+    chaosMonkeyConfiguration.changeChaosMonkeySettings(methodName, chaosMonkeySettings);
 
     try {
       infraComponent.executeAnyOperation();

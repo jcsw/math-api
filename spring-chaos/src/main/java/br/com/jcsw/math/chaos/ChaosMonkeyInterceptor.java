@@ -30,18 +30,21 @@ public class ChaosMonkeyInterceptor {
 
   private void processChaosMonkey(MethodSignature methodSignature) {
 
-    ChaosMonkeySettings chaosMonkeySettings =
-        chaosMonkeyConfiguration.getMonkeySettingsByMethod(methodSignature.getMethod().getName());
+    if(!chaosMonkeyConfiguration.isEnabled()) {
+      return;
+    }
+
+    String methodName = methodSignature.getMethod().getName();
+
+    ChaosMonkeySettings chaosMonkeySettings = chaosMonkeyConfiguration.getMonkeySettingsByMethod(methodName);
 
     if(chaosMonkeySettings != null) {
-      logger.info("method={} key={} settings={}",
-          "processChaosMonkey",
-          methodSignature.getMethod().getName(),
-          chaosMonkeySettings);
+
+      logger.info("method=processChaosMonkey key={} settings={}", methodName, chaosMonkeySettings);
 
       switch (chaosMonkeySettings.getChaosType()) {
         case LATENCY:
-          generateLatency(chaosMonkeySettings.getLatencyRangeStart(), chaosMonkeySettings.getLatencyRangeEnd());
+          simulateLatency(chaosMonkeySettings.getLatencyRangeStart(), chaosMonkeySettings.getLatencyRangeEnd());
         case DENIAL:
           throw new RuntimeException("ChaosMonkey");
       }
@@ -52,13 +55,13 @@ public class ChaosMonkeyInterceptor {
   /***
    * Generates a timeout exception
    */
-  private void generateLatency(int rangeStart, int rangeEnd) {
+  private void simulateLatency(int rangeStart, int rangeEnd) {
 
-    int timeout = RandomUtils.nextInt(rangeStart, rangeEnd);
-    logger.info("method={} latency={}", "generateLatency", timeout);
+    int latency = RandomUtils.nextInt(rangeStart, rangeEnd);
+    logger.info("method=simulateLatency latency={}", latency);
 
     try {
-      Thread.sleep(timeout);
+      Thread.sleep(latency);
     } catch (InterruptedException e) {
       // do nothing
     }
