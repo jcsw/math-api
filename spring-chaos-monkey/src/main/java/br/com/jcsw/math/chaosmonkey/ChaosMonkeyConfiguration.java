@@ -1,56 +1,18 @@
 package br.com.jcsw.math.chaosmonkey;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
+import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-/**
- * Sets up the use of chaosmonkey monkey
- */
-@Component
-class ChaosMonkeyConfiguration implements InitializingBean {
+@Configuration
+public class ChaosMonkeyConfiguration {
 
-  private Map<String, ChaosMonkeySettings> monkeySettingsMap;
-
-  private boolean enabled = false;
-
-  @Override
-  public void afterPropertiesSet() {
-    if(monkeySettingsMap == null) {
-      monkeySettingsMap = new HashMap<>();
-    }
+  @Bean
+  @ConditionalOnMissingBean
+  @ConditionalOnEnabledEndpoint
+  public ChaosMonkeyRestEndpoint chaosMonkeyRestEndpoint() {
+    return new ChaosMonkeyRestEndpoint();
   }
 
-  Map<String, ChaosMonkeySettings> listChaosMonkeySettings() {
-    return new HashMap<>(monkeySettingsMap);
-  }
-
-  void changeMethodChaosMonkeySettings(String methodName, ChaosMonkeySettings chaosMonkeySettings) {
-    Assert.notNull(methodName, "methodName is required");
-    Assert.notNull(chaosMonkeySettings, "chaosMonkeySettings is required");
-
-    chaosMonkeySettings.validate();
-
-    if(monkeySettingsMap.containsKey(methodName)) {
-      monkeySettingsMap.put(methodName, chaosMonkeySettings);
-    }
-  }
-
-  void addMethodToChaosMonkey(String methodName) {
-    monkeySettingsMap.put(methodName, ChaosMonkeySettings.makeEmptySettings());
-  }
-
-  ChaosMonkeySettings getMonkeySettingsByMethod(String methodName) {
-    return monkeySettingsMap.getOrDefault(methodName, null);
-  }
-
-  boolean isEnabled() {
-    return enabled;
-  }
-
-  void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
 }

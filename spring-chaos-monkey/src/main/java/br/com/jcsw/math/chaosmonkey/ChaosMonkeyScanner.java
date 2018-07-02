@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 class ChaosMonkeyScanner implements ApplicationContextAware {
 
   @Autowired
-  private ChaosMonkeyConfiguration chaosMonkeyConfiguration;
+  private ChaosMonkeyRegister chaosMonkeyRegister;
 
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) {
@@ -28,7 +28,7 @@ class ChaosMonkeyScanner implements ApplicationContextAware {
 
       for (Method method : beanClass.getDeclaredMethods()) {
         if(method.isAnnotationPresent(ChaosMonkey.class)) {
-          chaosMonkeyConfiguration.addMethodToChaosMonkey(method.getName());
+          chaosMonkeyRegister.addMethodToChaosMonkey(method.getName());
         }
       }
 

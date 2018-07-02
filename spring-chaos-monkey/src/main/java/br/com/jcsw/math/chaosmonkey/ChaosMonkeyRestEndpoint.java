@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 class ChaosMonkeyRestEndpoint {
 
   @Autowired
-  private ChaosMonkeyConfiguration chaosMonkeyConfiguration;
+  private ChaosMonkeyRegister chaosMonkeyRegister;
 
   @GetMapping("/settings")
   Map<String, ChaosMonkeySettings> getSettings() {
-    return chaosMonkeyConfiguration.listChaosMonkeySettings();
+    return chaosMonkeyRegister.listChaosMonkeySettings();
   }
 
   @PostMapping("/enable")
   ResponseEntity<String> enableChaosMonkey() {
-    chaosMonkeyConfiguration.setEnabled(true);
+    chaosMonkeyRegister.setEnabled(true);
     return ResponseEntity.ok().body("Chaos Monkey is enabled");
   }
 
   @PostMapping("/disable")
   ResponseEntity<String> disableChaosMonkey() {
-    chaosMonkeyConfiguration.setEnabled(false);
+    chaosMonkeyRegister.setEnabled(false);
     return ResponseEntity.ok().body("Chaos Monkey is disabled");
   }
 
   @GetMapping("/status")
   ResponseEntity<String> getStatus() {
-    if(chaosMonkeyConfiguration.isEnabled()) {
+    if(chaosMonkeyRegister.isEnabled()) {
       return ResponseEntity.status(HttpStatus.OK).body("Ready to Cause!");
     } else {
       return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("I am down!");

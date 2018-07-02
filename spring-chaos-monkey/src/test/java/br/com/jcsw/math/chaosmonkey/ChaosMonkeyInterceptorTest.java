@@ -17,12 +17,12 @@ public class ChaosMonkeyInterceptorTest {
   private FakeComponent fakeComponent;
 
   @Autowired
-  private ChaosMonkeyConfiguration chaosMonkeyConfiguration;
+  private ChaosMonkeyRegister chaosMonkeyRegister;
 
   @Test
   public void shouldEnableChaosMonkeyForAnnotationMethod() {
 
-    Map<String, ChaosMonkeySettings> chaosMonkeySettings = chaosMonkeyConfiguration.listChaosMonkeySettings();
+    Map<String, ChaosMonkeySettings> chaosMonkeySettings = chaosMonkeyRegister.listChaosMonkeySettings();
 
     Assert.assertNotNull(chaosMonkeySettings);
     Assert.assertEquals(1, chaosMonkeySettings.size());
@@ -35,8 +35,8 @@ public class ChaosMonkeyInterceptorTest {
     String expectResult = "OK";
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setEnabled(true);
-    chaosMonkeyConfiguration.changeMethodChaosMonkeySettings(methodName, ChaosMonkeySettings.makeEmptySettings());
+    chaosMonkeyRegister.setEnabled(true);
+    chaosMonkeyRegister.changeMethodChaosMonkeySettings(methodName, ChaosMonkeySettings.makeEmptySettings());
 
     String result = fakeComponent.executeAnyOperation();
 
@@ -51,8 +51,8 @@ public class ChaosMonkeyInterceptorTest {
     ChaosMonkeySettings chaosMonkeySettings = new ChaosMonkeySettings(ChaosMonkeyType.DENIAL);
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setEnabled(false);
-    chaosMonkeyConfiguration.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
+    chaosMonkeyRegister.setEnabled(false);
+    chaosMonkeyRegister.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
 
     String result = fakeComponent.executeAnyOperation();
 
@@ -67,8 +67,8 @@ public class ChaosMonkeyInterceptorTest {
     ChaosMonkeySettings chaosMonkeySettings = new ChaosMonkeySettings(ChaosMonkeyType.DENIAL);
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setEnabled(true);
-    chaosMonkeyConfiguration.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
+    chaosMonkeyRegister.setEnabled(true);
+    chaosMonkeyRegister.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
 
     try {
       fakeComponent.executeAnyOperation();
@@ -86,8 +86,8 @@ public class ChaosMonkeyInterceptorTest {
     ChaosMonkeySettings chaosMonkeySettings = new ChaosMonkeySettings(ChaosMonkeyType.LATENCY, 500, 1000);
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setEnabled(true);
-    chaosMonkeyConfiguration.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
+    chaosMonkeyRegister.setEnabled(true);
+    chaosMonkeyRegister.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
 
     Date start = new Date();
     fakeComponent.executeAnyOperation();
@@ -110,8 +110,8 @@ public class ChaosMonkeyInterceptorTest {
     ChaosMonkeySettings chaosMonkeySettings = new ChaosMonkeySettings(ChaosMonkeyType.LATENCY_AND_DENIAL, 300, 600);
     String methodName = "executeAnyOperation";
 
-    chaosMonkeyConfiguration.setEnabled(true);
-    chaosMonkeyConfiguration.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
+    chaosMonkeyRegister.setEnabled(true);
+    chaosMonkeyRegister.changeMethodChaosMonkeySettings(methodName, chaosMonkeySettings);
 
     Date start = new Date();
     try {

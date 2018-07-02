@@ -17,7 +17,7 @@ public class ChaosMonkeyInterceptor {
   private static final Logger logger = LoggerFactory.getLogger(ChaosMonkeyInterceptor.class);
 
   @Autowired
-  private ChaosMonkeyConfiguration chaosMonkeyConfiguration;
+  private ChaosMonkeyRegister chaosMonkeyRegister;
 
   @Around("@annotation(ChaosMonkey)")
   public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -30,13 +30,13 @@ public class ChaosMonkeyInterceptor {
 
   private void processChaosMonkey(MethodSignature methodSignature) {
 
-    if(!chaosMonkeyConfiguration.isEnabled()) {
+    if(!chaosMonkeyRegister.isEnabled()) {
       return;
     }
 
     String methodName = methodSignature.getMethod().getName();
 
-    ChaosMonkeySettings chaosMonkeySettings = chaosMonkeyConfiguration.getMonkeySettingsByMethod(methodName);
+    ChaosMonkeySettings chaosMonkeySettings = chaosMonkeyRegister.getMonkeySettingsByMethod(methodName);
 
     if(chaosMonkeySettings != null) {
 
