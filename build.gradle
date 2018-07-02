@@ -59,6 +59,7 @@ ext {
 
 dependencies {
     compile project(':spring-aop-log')
+    compile project(':spring-chaos-monkey')
 
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-undertow'

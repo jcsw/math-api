@@ -1,6 +1,7 @@
 package br.com.jcsw.math.infra;
 
 import br.com.jcsw.math.infra.correio.CorreioHttpClient;
+import br.com.jcsw.math.infra.mongodb.AddressRepository;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
 import br.com.jcsw.math.infra.mongodb.MathOperationRepository;
 import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
@@ -31,5 +32,9 @@ public class TestConfiguration {
 
   @MockBean
   private AsyncMessageFallbackRepository asyncMessageFallbackRepository;
+
+  @MockBean
+  private AddressRepository addressRepository;
+
 
 }

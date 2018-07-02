@@ -1,20 +1,16 @@
 package br.com.jcsw.math.infra;
 
-import static br.com.jcsw.math.infra.rabbitmq.ConsumerListener.ASYNC_MATH_OPERATION;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer.SEARCH_ADDRESS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import br.com.jcsw.math.domain.api.MathOperation;
-import br.com.jcsw.math.domain.api.OperationRequest;
 import br.com.jcsw.math.infra.api.AsyncMessageProducer;
-import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackEntity;
 import br.com.jcsw.math.infra.mongodb.AsyncMessageFallbackRepository;
-import java.math.BigDecimal;
-import java.util.Arrays;
+import br.com.jcsw.math.infra.rabbitmq.RabbitMQAsyncMessageProducer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,14 +35,13 @@ public class AsyncMessageProducerTest {
   @Test
   public void shouldContinueWhenRabbitMQAsyncMessageProducerNotReturnError() {
 
-    OperationRequest operationRequest = //
-        new OperationRequest(MathOperation.SUM, Arrays.asList(BigDecimal.ONE, BigDecimal.ONE));
+    String zipCode = "76872862";
 
     doNothing() //
-        .when(rabbitMQAsyncMessageProducer).sendMessage(ASYNC_MATH_OPERATION, operationRequest);
+        .when(rabbitMQAsyncMessageProducer).sendMessage(SEARCH_ADDRESS, zipCode);
 
     try {
-      asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
+      asyncMessageProducer.sendMessageToSearchAddress(zipCode);
     } catch (Exception ex) {
       Assert.fail(ex.getMessage());
     }
@@ -55,13 +50,12 @@ public class AsyncMessageProducerTest {
   @Test
   public void shouldExecuteFallbackWhenRabbitMQAsyncMessageProducerReturnError() {
 
-    OperationRequest operationRequest = //
-        new OperationRequest(MathOperation.SUM, Arrays.asList(BigDecimal.ONE, BigDecimal.ONE));
+    String zipCode = "01001001";
 
     doThrow(new RuntimeException("Connection error")) //
-        .when(rabbitMQAsyncMessageProducer).sendMessage(ASYNC_MATH_OPERATION, operationRequest);
+        .when(rabbitMQAsyncMessageProducer).sendMessage(SEARCH_ADDRESS, zipCode);
 
-    asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
+    asyncMessageProducer.sendMessageToSearchAddress(zipCode);
 
     verify(asyncMessageFallbackRepository, times(1)) //
         .insert(any(AsyncMessageFallbackEntity.class));

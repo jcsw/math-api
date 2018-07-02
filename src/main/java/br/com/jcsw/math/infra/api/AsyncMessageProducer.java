@@ -1,10 +1,8 @@
 package br.com.jcsw.math.infra.api;
 
-import br.com.jcsw.math.domain.api.OperationRequest;
-
 public interface AsyncMessageProducer {
 
-  void sendMessageToAsyncMathOperation(OperationRequest operationRequest);
+  void sendMessageToSearchAddress(String zipCode);
 
   void sendMessageToPersistenceFallback(Object entity);
 }

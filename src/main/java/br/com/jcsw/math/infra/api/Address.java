@@ -1,7 +1,9 @@
 package br.com.jcsw.math.infra.api;
 
+import java.util.Map;
+
 public interface Address {
 
-  String getCityByZipCode(String zipCode);
+  Map<String, Object> searchAddressByZipCode(String zipCode);
 
 }

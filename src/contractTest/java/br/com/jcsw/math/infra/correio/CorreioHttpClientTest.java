@@ -23,7 +23,7 @@ public class CorreioHttpClientTest {
 
     String validZipCode = "01001000";
 
-    Map<String, Object> address = correioHttpClient.addressByZipCode(validZipCode).orElseThrow();
+    Map<String, Object> address = correioHttpClient.searchAddressByZipCode(validZipCode).orElseThrow();
 
     Assert.assertNotNull(address);
     Assert.assertEquals("São Paulo", address.get("localidade"));

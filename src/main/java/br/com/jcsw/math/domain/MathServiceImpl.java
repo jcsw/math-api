@@ -27,7 +27,7 @@ class MathServiceImpl implements MathService {
         .execute(operationRequest.getOperation(), operationRequest.getParameters());
     OperationResponse operationResponse = new OperationResponse(result);
 
-    asyncMessageProducer.sendMessageToAsyncMathOperation(operationRequest);
+    asyncMessageProducer.sendMessageToSearchAddress("01001001");
 
     persistenceRepository.persistMathOperationLog(operationRequest, result);
 

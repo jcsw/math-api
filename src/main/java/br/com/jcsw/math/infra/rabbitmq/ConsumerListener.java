@@ -1,15 +1,15 @@
 package br.com.jcsw.math.infra.rabbitmq;
 
-import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.PRODUCER_PREFIX;
+import static br.com.jcsw.math.infra.rabbitmq.RabbitMQArguments.CONSUMER_PREFIX;
 
 /**
  * Listener for receive message of a consumer
  */
 public interface ConsumerListener {
 
-  String ASYNC_MATH_OPERATION = PRODUCER_PREFIX + "async_math_operation";
+  String SEARCH_ADDRESS = CONSUMER_PREFIX + "search_address";
 
-  String PERSISTENCE_FALLBACK = PRODUCER_PREFIX + "persistence_fallback";
+  String PERSISTENCE_FALLBACK = CONSUMER_PREFIX + "persistence_fallback";
 
   /**
    * Receive message

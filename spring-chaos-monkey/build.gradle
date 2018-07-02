@@ -17,6 +17,8 @@ repositories {
 
 dependencies {
     compile 'org.springframework:spring-context:5.0.7.RELEASE'
+    compile 'org.springframework:spring-web:5.0.7.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-actuator:2.0.3.RELEASE'
     compile 'org.aspectj:aspectjweaver:1.8.13'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'org.apache.commons:commons-lang3:3.7'

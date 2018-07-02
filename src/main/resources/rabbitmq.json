@@ -1,11 +1,11 @@
 {
   "producers" : [
-    {"name": "async_math_operation",   "type":"DIRECT"},
+    {"name": "search_address",   "type":"DIRECT"},
     {"name": "persistence_fallback",   "type":"DIRECT"}
   ],
 
   "consumers" : [
-    {"name": "async_math_operation",   "producer":"async_math_operation",   "retryQty": 2, "retryTime": 3000},
+    {"name": "search_address",   "producer":"search_address",   "retryQty": 2, "retryTime": 3000},
     {"name": "persistence_fallback",   "producer":"persistence_fallback",   "retryQty": 3, "retryTime": 6000}
   ]
 }

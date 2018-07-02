@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface CorreioHttpClient {
 
   @RequestMapping(path = "/ws/{zipCode}/json/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-  Optional<Map<String, Object>> addressByZipCode(@PathVariable("zipCode") String zipCode);
+  Optional<Map<String, Object>> searchAddressByZipCode(@PathVariable("zipCode") String zipCode);
 
 }

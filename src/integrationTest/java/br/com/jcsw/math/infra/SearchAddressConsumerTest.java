@@ -1,12 +1,15 @@
 package br.com.jcsw.math.infra;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import br.com.jcsw.math.infra.api.Address;
 import br.com.jcsw.math.infra.correio.CorreioHttpClient;
+import br.com.jcsw.math.infra.mongodb.AddressEntity;
+import br.com.jcsw.math.infra.mongodb.AddressRepository;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,36 +17,30 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfiguration.class, webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AddressTest {
+public class SearchAddressConsumerTest {
 
   @Autowired
-  private Address address;
+  private SearchAddressConsumer searchAddressConsumer;
+
+  @Autowired
+  private AddressRepository addressRepository;
 
   @Autowired
   private CorreioHttpClient correioHttpClient;
 
   @Test
-  public void shouldReturnAddressWhenClientItsUp() {
+  public void shouldSaveEntityWhenHasValidZipCode() {
 
     String zipCode = "76872862";
 
-    String expectedCity = "Ariquemes";
-
     when(correioHttpClient.searchAddressByZipCode(zipCode)).thenReturn(Optional.of(Map.of("localidade", "Ariquemes")));
 
-    Assert.assertEquals(address.searchAddressByZipCode(zipCode).get("localidade"), expectedCity);
+    searchAddressConsumer.onMessage(zipCode);
+
+    verify(addressRepository, times(1)) //
+        .insert(any(AddressEntity.class));
   }
 
-  @Test
-  public void shouldReturnEmptyWhenClientItsDown() {
-
-    String zipCode = "01001001";
-
-    when(correioHttpClient.searchAddressByZipCode(zipCode)).thenThrow(new RuntimeException());
-
-    Assert.assertTrue(address.searchAddressByZipCode(zipCode).isEmpty());
-  }
 }
