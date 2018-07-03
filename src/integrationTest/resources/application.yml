@@ -1,0 +1,3 @@
+### Server ###
+server:
+  port: ${port:9988}
