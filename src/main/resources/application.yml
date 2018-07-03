@@ -2,6 +2,15 @@
 server:
   port: ${port:9900}
 
+### Management ###
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,chaos-monkey
+  server:
+    port: 8888
+
 ### Logging ###
 logging:
   level:
