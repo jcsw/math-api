@@ -2,6 +2,7 @@ package br.com.jcsw.math.chaosmonkey;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.Assert;
 
 class ChaosMonkeySettings {
@@ -13,7 +14,7 @@ class ChaosMonkeySettings {
   private Integer latencyRangeEnd;
 
   static ChaosMonkeySettings makeEmptySettings() {
-    return new ChaosMonkeySettings(ChaosMonkeyType.NOTHING);
+    return new ChaosMonkeySettings(ChaosMonkeyType.NOTHING, NumberUtils.INTEGER_ZERO, NumberUtils.INTEGER_ZERO);
   }
 
   ChaosMonkeySettings(ChaosMonkeyType chaosMonkeyType) {
@@ -40,34 +41,33 @@ class ChaosMonkeySettings {
   }
 
   void validate() {
-
     if(ChaosMonkeyType.LATENCY.equals(chaosMonkeyType) || ChaosMonkeyType.LATENCY_AND_DENIAL.equals(chaosMonkeyType)) {
       Assert.notNull(latencyRangeStart, "latencyRangeStart is required by LATENCY and LATENCY_AND_DENIAL");
       Assert.notNull(latencyRangeEnd, "latencyRangeEnd is required by LATENCY and LATENCY_AND_DENIAL");
     }
   }
 
-  ChaosMonkeyType getChaosMonkeyType() {
+  public ChaosMonkeyType getChaosMonkeyType() {
     return chaosMonkeyType;
   }
 
-  void setChaosMonkeyType(ChaosMonkeyType chaosMonkeyType) {
+  public void setChaosMonkeyType(ChaosMonkeyType chaosMonkeyType) {
     this.chaosMonkeyType = chaosMonkeyType;
   }
 
-  int getLatencyRangeStart() {
+  public int getLatencyRangeStart() {
     return latencyRangeStart;
   }
 
-  void setLatencyRangeStart(int latencyRangeStart) {
+  public void setLatencyRangeStart(int latencyRangeStart) {
     this.latencyRangeStart = latencyRangeStart;
   }
 
-  int getLatencyRangeEnd() {
+  public int getLatencyRangeEnd() {
     return latencyRangeEnd;
   }
 
-  void setLatencyRangeEnd(int latencyRangeEnd) {
+  public void setLatencyRangeEnd(int latencyRangeEnd) {
     this.latencyRangeEnd = latencyRangeEnd;
   }
 }

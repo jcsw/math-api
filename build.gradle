@@ -244,7 +244,7 @@ dockerCompose {
     bootNested {
         useComposeFiles = ["$project.rootDir/docker/dependencies/mongodb/docker-compose.yml",
                            "$project.rootDir/docker/dependencies/rabbitmq/docker-compose.yml"]
-        stopContainers = true
+        stopContainers = false
         removeContainers = false
         isRequiredBy(project.tasks.bootRun)
     }
