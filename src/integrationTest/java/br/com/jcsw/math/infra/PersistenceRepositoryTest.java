@@ -23,7 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfiguration.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = TestConfiguration.class, webEnvironment = WebEnvironment.MOCK)
 public class PersistenceRepositoryTest {
 
   @Autowired

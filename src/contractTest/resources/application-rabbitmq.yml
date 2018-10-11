@@ -1,5 +1,10 @@
-### RabbitMQ ###
+### Spring ###
 spring:
+  port: ${port:9953}
+  application:
+    name: math-api
+
+### RabbitMQ ###
   rabbitmq:
     host: localhost
     port: 5674

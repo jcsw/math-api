@@ -1,5 +1,6 @@
 ### Spring ###
 spring:
+  port: ${port:9952}
   application:
     name: math-api
 

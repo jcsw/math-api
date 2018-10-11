@@ -1,6 +1,6 @@
 # Math API #
 
-### Example Java Application with SpringBoot, Feign, Ribbon, Hystrix, MongoDB, RabbitMQ ###
+### Example Java Application with SpringBoot, Feign, Hystrix, MongoDB, RabbitMQ ###
 
 Build
 ```
@@ -19,4 +19,9 @@ Run
 To access doc
 ```
 http://localhost:9900/docs/index.html
+```
+
+To access actuator
+```
+http://localhost:8888/actuator
 ```

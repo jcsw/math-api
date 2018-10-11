@@ -1,5 +1,6 @@
 ### Spring ###
 spring:
+  port: ${port:9951}
   application:
     name: math-api
 
@@ -13,15 +14,5 @@ feign:
         readTimeout: 1000
         loggerLevel: basic
 
-### Ribbon ###
-ribbon:
-  eureka:
-    enabled: false
-
 correio:
-  ribbon:
-    listOfServers: http://viacep.com.br
-    ConnectTimeout: 500
-    ReadTimeout: 2000
-    MaxTotalHttpConnections: 1
-    MaxConnectionsPerHost: 1
+  url: http://viacep.com.br

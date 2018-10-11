@@ -2,9 +2,10 @@ package br.com.jcsw.math.infra.rabbitmq;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.util.CharsetUtil;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ class RabbitMQResourcesRegister {
       ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
       try (InputStreamReader reader = //
-          new InputStreamReader(classLoader.getResourceAsStream(RABBITMQ_RESOURCE_JSON), CharsetUtil.UTF_8);
+          new InputStreamReader(classLoader.getResourceAsStream(RABBITMQ_RESOURCE_JSON), Charset.forName("UTF-8"));
           BufferedReader buffered = new BufferedReader(reader)) {
         String content = buffered.lines().collect(Collectors.joining("\n"));
         return mapper.readValue(content, RabbitMQResources.class);

@@ -53,15 +53,5 @@ feign:
         readTimeout: 1000
         loggerLevel: basic
 
-### Ribbon ###
-ribbon:
-  eureka:
-    enabled: false
-
 correio:
-  ribbon:
-    listOfServers: http://viacep.com.br
-    ConnectTimeout: 500
-    ReadTimeout: 2000
-    MaxTotalHttpConnections: 3
-    MaxConnectionsPerHost: 3
+  url: http://viacep.com.br
